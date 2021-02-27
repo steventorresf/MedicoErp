@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "Cons. Agenda";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/master/js/serviciosAjax.js"></script>
+
+<div class="row">
+    <div class="col-12 offset-md-1 col-md-10">
+        <div class="card">
+            <div class="card-body">
+                <form id="formApp" name="formApp" novalidate="novalidate" class="form-horizontal">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>M&eacute;dico:</label>
+                            <ui-select ng-model="vm.entity.idMedico"
+                                       form="formApp"
+                                       theme="bootstrap"
+                                       tabindex="7"
+                                       required
+                                       on-select="vm.onChangeMedico($item, $model)">
+                                <ui-select-match placeholder="Seleccione un medico...">{{ $select.selected.nombreCompleto }}</ui-select-match>
+                                <ui-select-choices repeat="item.idUsuario as item in vm.listMedicos | filter: $select.search">
+                                    <div ng-bind-html="item.nombreCompleto | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-md-6">
+                            <label>Fecha Inicio:</label>
+                            <input type="date" class="form-control" form="formApp" ng-model="vm.entity.fechaInicio" required />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label>Fecha Fin:</label>
+                            <input type="date" class="form-control" form="formApp" ng-model="vm.entity.fechaFin" required />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-primary" ng-click="vm.consultarAg()" ng-disabled="formApp.$invalid">Consultar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 offset-md-1 col-md-10">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="fontsize-10" ui-grid="vm.gridOptions" ui-grid-resize-columns ui-grid-auto-resize></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-success" ng-click="vm.descargarExcel()" ng-disabled="vm.gridOptions.data.length === 0"><i class="fa fa-file-excel-o"></i> Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/master/controllers/admision/consultarAg.controller.js"></script>

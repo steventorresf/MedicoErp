@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewData["Title"] = "Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" ng-show="vm.gridVisible">
+    <div class="col-12 p-5">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <button ng-click="vm.nuevo()" class="btn btn-primary"><i class="fa fa-user-plus"></i> Nuevo</button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div class="fontsize-10" ui-grid="vm.gridOptions" ui-grid-resize-columns ui-grid-auto-resize></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row pl-3 pr-3" ng-show="vm.formVisible">
+    <div class="col-12 col-md-9">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h4 ng-show="!vm.formModify">Nuevo Usuario</h4>
+                <h4 ng-show="vm.formModify">Editar Usuario</h4>
+            </div>
+            <div class="card-body">
+                <form id="formApp" name="formApp" novalidate="novalidate" class="form-horizontal">
+                    <div class="form-group row">
+                        <div class="col-12 col-sm-7">
+                            <label>Tipo Identificaci&oacute;n:<label class="red">*</label></label>
+                            <ui-select ng-model="vm.entity.tipoIden"
+                                       form="formApp"
+                                       theme="bootstrap"
+                                       tabindex="7"
+                                       required>
+                                <ui-select-match placeholder="Seleccione ...">{{$select.selected.descripcion}}</ui-select-match>
+                                <ui-select-choices repeat="item.codValor as item in vm.listTiposIden | filter: $select.search">
+                                    <div ng-bind-html="item.descripcion | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-12 col-sm-5">
+                            <label>N&uacute;mero Identificaci&oacute;n:<label class="red">*</label></label>
+                            <input ng-model="vm.entity.numIden" form="formApp" type="text" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-sm-7">
+                            <label>Nombre Completo:<label class="red">*</label></label>
+                            <input ng-model="vm.entity.nombreCompleto" form="formApp" type="text" class="form-control" required />
+                        </div>
+                        <div class="col-12 col-sm-5">
+                            <label>Sexo:<label class="red">*</label></label>
+                            <select ng-model="vm.entity.codSexo" form="formApp" class="form-control" required>
+                                <option ng-repeat="item in vm.listSexo" value="{{ item.codigo }}">{{ item.descripcion }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-sm-7">
+                            <label>Direcci&oacute;n:<label class="red">*</label></label>
+                            <input ng-model="vm.entity.direccion" form="formApp" type="text" class="form-control" required />
+                        </div>
+                        <div class="col-12 col-sm-5">
+                            <label>Tel&eacute;fono:<label class="red">*</label></label>
+                            <input ng-model="vm.entity.telefono" form="formApp" type="text" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-md-4">
+                            <label>Fecha Nacimiento:<label class="red">*</label></label>
+                            <input id="TxtFechaNac" type="date" class="form-control" />
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label>¿Es M&eacute;dico?:<label class="red">*</label></label>
+                            <select ng-model="vm.entity.esMedico" ng-change="vm.onSelectEsMedico()" form="formApp" class="form-control" required>
+                                <option ng-repeat="item in vm.listBool" value="{{ item.codigo }}">{{ item.descripcion }}</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label>Nombre Usuario:<label class="red">*</label></label>
+                            <input ng-model="vm.entity.nomUsuario" form="formApp" type="text" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-md-3">
+                            <label>Registro Medico:</label>
+                            <input ng-model="vm.entity.registro" form="formApp" type="text" class="form-control" />
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label>Especialidad:</label>
+                            <input ng-model="vm.entity.especialidad" form="formApp" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <button ng-click="vm.guardar()" class="btn btn-primary" ng-disabled="formApp.$invalid">Guardar</button>
+                            <button ng-click="vm.cancelar()" class="btn btn-default">Cancelar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <img style="width:50%; display:block; margin: auto" src="~/img/{{vm.entity.avatar}}" class="img-fluid rounded-circle" />
+            </div>
+            <div class="card-footer">
+                <ui-select ng-model="vm.entity.avatar"
+                           form="formApp"
+                           theme="bootstrap"
+                           tabindex="7"
+                           required>
+                    <ui-select-match placeholder="Seleccione un avatar...">{{$select.selected.descripcion}}</ui-select-match>
+                    <ui-select-choices repeat="item.codigo as item in vm.listAvatar | filter: $select.search">
+                        <div ng-bind-html="item.descripcion | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="vm.gridMenuUsuVisible">
+    <div class="col-12 offset-md-2 col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>{{vm.entityUsu.nombreCompleto}}</h4>
+            </div>
+            <div class="card-body">
+                <form id="formAppMenu" name="formAppMenu" novalidate="novalidate" class="form-horizontal">
+                    <div class="form-group row">
+                        <div class="col-12 col-md-8">
+                            <ui-select ng-model="vm.idMenu"
+                                       form="formAppMenu"
+                                       theme="bootstrap"
+                                       tabindex="7"
+                                       required>
+                                <ui-select-match placeholder="Seleccione una opción...">{{$select.selected.descripcion}}</ui-select-match>
+                                <ui-select-choices repeat="item.idMenu as item in vm.listMenu | filter: $select.search">
+                                    <div ng-bind-html="item.descripcion | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button class="btn btn-primary" ng-click="vm.agregarMenuUsuario()" ng-disabled="formAppMenu.$invalid">Agregar</button>
+                            <button class="btn btn-default" ng-click="vm.regresarMenuUsu()">Regresar</button>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <div class="fontsize-10" ui-grid="vm.gridOptionsMenu" ui-grid-selection ui-grid-resize-columns ui-grid-auto-resize></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/master/controllers/admin/usuarios.controller.js"></script>

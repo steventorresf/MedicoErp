@@ -1,0 +1,261 @@
+﻿
+@{
+    ViewData["Title"] = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .fontsize-10 {
+        max-height: 150px;
+        font-size: 0.8em;
+    }
+
+    .bg-header {
+        background-color: transparent;
+    }
+
+    .cursorPointer {
+        cursor: pointer;
+    }
+
+    .tabla{
+        font-size:0.85em;
+    }
+</style>
+
+<div class="row">
+    <div class="col-12 offset-md-1 col-md-10">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4>Historia Clinica</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="tabla nohover">
+                            <thead>
+                                <tr>
+                                    <th>No. Evento:</th>
+                                    <td colspan="3">{{vm.entity.noEvento}}</td>
+                                    <th>Fecha:</th>
+                                    <td>{{vm.entity.sFechaEvento}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Paciente:</th>
+                                    <td colspan="3">{{vm.entity.paciente.nombrePaciente}}</td>
+                                    <th>Doc. Identidad:</th>
+                                    <td>{{vm.entity.paciente.tipoIden + ' ' + vm.entity.paciente.numIden}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Fecha Nac.:</th>
+                                    <td>{{vm.entity.sFechaNacimiento}}</td>
+                                    <th>Sexo:</th>
+                                    <td>{{vm.entity.paciente.codSexo}}</td>
+                                    <th>Ocupaci&oacute;n:</th>
+                                    <td>{{vm.entity.paciente.ocupacion}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Direcci&oacute;n:</th>
+                                    <td colspan="3">{{vm.entity.paciente.direccion}}</td>
+                                    <th>Tel&eacute;fonos:</th>
+                                    <td>{{vm.entity.paciente.telefono}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Barrio:</th>
+                                    <td>{{vm.entity.paciente.barrio}}</td>
+                                    <th>Estado Civil:</th>
+                                    <td>{{vm.entity.estadoCivil}}</td>
+                                    <th>Correo:</th>
+                                    <td>{{vm.entity.paciente.correo}}</td>
+                                </tr>
+                                <tr>
+                                    <th>EPS:</th>
+                                    <td colspan="3">{{vm.entity.convenio.nombreEps}}</td>
+                                    <th>Tipo Usuario:</th>
+                                    <td>{{vm.entity.tipoUsuario}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Convenio:</th>
+                                    <td colspan="5">{{vm.entity.convenio.nombreConvenio}}</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Evoluci&oacute;n</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="formApp1" name="formApp1" novalidate="novalidate" class="form-horizontal">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <textarea rows="10" class="form-control" form="formApp1" ng-model="vm.entity.evolucion" ng-blur="vm.onChangeEvolucion()" required></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Biopsia Anterior</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input type="text" class="form-control" ng-model="vm.entity.biopsiaAnterior" ng-blur="vm.onChangeBiopsia()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Diagnosticos</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="formDiag" name="formDiag" novalidate="novalidate" class="form-horizontal">
+                            <div class="form-group row">
+                                <div class="col-12 offset-md-1 col-md-10">
+                                    <label>Diagnostico Principal:<span>*</span> </label>
+                                    <ui-select ng-model="vm.entity.codDiagPal"
+                                               form="formDiag"
+                                               theme="bootstrap"
+                                               tabindex="7"
+                                               required
+                                               on-select="vm.onChangeDiagPal($item, $model)">
+                                        <ui-select-match placeholder="Seleccione un diagnostico...">{{ $select.selected.diagnostico }}</ui-select-match>
+                                        <ui-select-choices repeat="item.codigo as item in vm.listDiagsPal track by $index"
+                                                           refresh="vm.refreshDiagPal($select.search)"
+                                                           refresh-delay="0">
+                                            <div ng-bind-html="item.diagnostico | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group row">
+                                <div class="col-12 offset-md-1 col-md-10">
+                                    <label>Diagnostico Relacional:</label>
+                                    <ui-select ng-model="vm.entity.codDiagRel1"
+                                               form="formDiag"
+                                               theme="bootstrap"
+                                               tabindex="7"
+                                               on-select="vm.onChangeDiagRel1($item, $model)">
+                                        <ui-select-match placeholder="Seleccione un diagnostico...">{{ $select.selected.diagnostico }}</ui-select-match>
+                                        <ui-select-choices repeat="item.codigo as item in vm.listDiagsRel1 track by $index"
+                                                           refresh="vm.refreshDiagRel1($select.search)"
+                                                           refresh-delay="0">
+                                            <div ng-bind-html="item.diagnostico | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Ayudas Diagnosticas</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <textarea rows="10" class="form-control" form="formApp1" ng-model="vm.entity.ayudasDiagnosticas" ng-blur="vm.onChangeAyudasDx()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Anexos</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <textarea rows="10" class="form-control" form="formApp1" ng-model="vm.entity.anexos" ng-blur="vm.onChangeAnexos()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <h4>Formulaciones</h4>
+                            </div>
+                            <div class="col-12 col-md-6 text-right">
+                                <button class="btn btn-sm btn-primary" ng-click="vm.nuevaFormula()">Nuevo</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="fontsize-10" ui-grid="vm.gridOptionsFor" ui-grid-selection ui-grid-edit ui-grid-resize-columns ui-grid-auto-resize></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <h4>Ordenes</h4>
+                            </div>
+                            <div class="col-12 col-md-6 text-right">
+                                <button class="btn btn-sm btn-primary" ng-click="vm.nuevaOrden()">Nuevo</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="fontsize-10" ui-grid="vm.gridOptionsOrd" ui-grid-selection ui-grid-edit ui-grid-resize-columns ui-grid-auto-resize></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row mb-3">
+            <div class="col-12">
+                <button class="btn btn-success" ng-click="vm.imprimirEvento()">Imprimir Evento</button>
+                <button class="btn btn-primary" ng-click="vm.finalizarEvento()" ng-disabled="formApp1.$invalid || formDiag.$invalid">Finalizar Evento</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var IdEvento = '@ViewBag.IdEvento';
+</script>
+
+<script src="~/master/controllers/historiaClinica/evento.controller.js"></script>

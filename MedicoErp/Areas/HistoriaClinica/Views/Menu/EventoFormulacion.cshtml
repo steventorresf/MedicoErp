@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewData["Title"] = "Evento - Formulacion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .fontsize-10 {
+        max-height: 150px;
+        font-size: 0.8em;
+    }
+
+    .bg-header {
+        background-color: transparent;
+    }
+
+    .cursorPointer {
+        cursor: pointer;
+    }
+</style>
+
+<div class="row" ng-show="vm.gridVisible">
+    <div class="col-12 offset-md-1 col-md-10">
+        <div class="card">
+            <div class="card-header text-center">
+                <h4>Historia Clinica #{{vm.entity.noEvento}}</h4>
+            </div>
+            <div class="card-body">
+                <table class="tabla nohover">
+                    <thead>
+                        <tr>
+                            <th>Paciente:</th>
+                            <td>{{vm.entity.paciente.nombrePaciente + ' - ' + vm.entity.tipoIden + ' ' + vm.entity.numIden}}</td>
+                            <th>Sexo:</th>
+                            <td>{{vm.entity.paciente.codSexo}}</td>
+                        </tr>
+                        <tr>
+                            <th>Convenio:</th>
+                            <td>{{vm.entity.convenio.nombreConvenio}}</td>
+                            <th>Fecha Nac:</th>
+                            <td>{{vm.entity.paciente.sFechaNacimiento}}</td>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<hr ng-show="vm.gridVisible" />
+<div class="row" ng-show="vm.gridVisible">
+    <div class="col-12 offset-md-1 col-md-10">
+        <div class="card">
+            <div class="card-header text-right">
+                <button class="btn btn-sm btn-primary" ng-click="vm.agregarMed()">Agregar</button>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="fontsize-10" ui-grid="vm.gridOptionsFor" ui-grid-selection ui-grid-edit ui-grid-resize-columns ui-grid-auto-resize></div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>Observaciones:</label>
+                        <textarea rows="3" class="form-control" ng-model="vm.entityFor.observaciones"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-primary" ng-click="vm.guardar()" ng-disabled="vm.gridOptionsFor.data.length === 0">Guardar</button>
+                        <button class="btn btn-default" ng-click="vm.regresar()">Volver al evento</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" ng-show="vm.formVisible">
+    <div class="col-12 offset-md-1 col-md-10">
+        <div class="card">
+            <div class="card-body">
+                <form id="formApp" name="formApp" novalidate="novalidate" class="form-horizontal">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Medicamento:</label>
+                            <input type="text" class="form-control" form="formApp" ng-model="vm.entityForDet.medicamento" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-md-8">
+                            <label>V&iacute;a Admon:</label>
+                            <ui-select ng-model="vm.entityForDet.codViaAdmon"
+                                       form="formApp"
+                                       theme="bootstrap"
+                                       tabindex="7"
+                                       on-select="vm.onChangeViaAdmon($item, $model)"
+                                       required>
+                                <ui-select-match placeholder="Seleccione una via admon...">{{ $select.selected.descripcion }}</ui-select-match>
+                                <ui-select-choices repeat="item.codValor as item in vm.listViasAdmon | filter: $select.search">
+                                    <div ng-bind-html="item.descripcion | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label>Cantidad:</label>
+                            <input type="number" class="form-control" ng-blur="vm.fnGuardarRespuesta(1, this.value, '')" form="formApp" ng-model="vm.entityForDet.cantidad" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Posologia:</label>
+                            <textarea class="form-control" rows="3" form="formApp" ng-model="vm.entityForDet.posologia" required></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-primary" ng-click="vm.agregarMedicamento()" ng-disabled="formApp.$invalid">Agregar</button>
+                        <button class="btn btn-default" ng-click="vm.cancelar()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var IdEvento = '@ViewBag.IdEvento';
+</script>
+
+<script src="~/master/controllers/historiaClinica/evento.controller.formulacion.js"></script>
