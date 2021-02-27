@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicoErp", "MedicoErp\MedicoErp.csproj", "{A9BB467D-7F78-402F-B6F9-E6E9E3405B7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicoErp.Model", "MedicoErp.Model\MedicoErp.Model.csproj", "{DF4F7C51-D060-43B8-A237-40FEB6E5DE58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicoErp.Web", "MedicoErp.Web\MedicoErp.Web.csproj", "{805B1582-A577-47AC-B0F6-C5171565873B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A9BB467D-7F78-402F-B6F9-E6E9E3405B7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9BB467D-7F78-402F-B6F9-E6E9E3405B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A9BB467D-7F78-402F-B6F9-E6E9E3405B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A9BB467D-7F78-402F-B6F9-E6E9E3405B7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF4F7C51-D060-43B8-A237-40FEB6E5DE58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF4F7C51-D060-43B8-A237-40FEB6E5DE58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF4F7C51-D060-43B8-A237-40FEB6E5DE58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF4F7C51-D060-43B8-A237-40FEB6E5DE58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{805B1582-A577-47AC-B0F6-C5171565873B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{805B1582-A577-47AC-B0F6-C5171565873B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{805B1582-A577-47AC-B0F6-C5171565873B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{805B1582-A577-47AC-B0F6-C5171565873B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
