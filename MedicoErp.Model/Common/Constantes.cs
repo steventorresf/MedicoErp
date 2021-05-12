@@ -24,6 +24,7 @@ namespace MedicoErp.Model.Common
         public const string EstadoConfirmado = "CO";
         public const string EstadoPendiente = "PE";
         public const string EstadoFinalizado = "FI";
+        public const string EstadoAnulado = "AN";
 
         // ClavePredeterminada
         public const string ClavePredeterminada = "12345";
@@ -51,9 +52,22 @@ namespace MedicoErp.Model.Common
         public const string CamAyudaDx = "AD";
         public const string CamAnexos = "AX";
         public const string CamDiagPal = "DP";
-        public const string CamDiagRel = "DR";
+        public const string CamDiagRel1 = "DR1";
+        public const string CamDiagRel2 = "DR2";
+        public const string CamDiagRel3 = "DR3";
 
-        // Nombres de archivos de excel
+        // Nombres de archivos
         public const string NomExcelAgendaMedica = "AgendaMedica.xlsx";
+        public const string NomExcelActividades = "Actividades.xlsx";
+
+        // Nombres de documentos
+        public const string CodigoConsentimiento = "CONSEN";
+        public const string NombreConsentimiento = "Consentimiento_Informado.pdf";
+
+        // DataArchivos
+        public const string DataPdf = "data:application/pdf;base64,";
+        public const string DataJpeg = "data:application/jpeg;base64,";
+        public const string DataPng = "data:application/png;base64,";
+        
     }
 }

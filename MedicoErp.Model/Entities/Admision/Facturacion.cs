@@ -19,6 +19,9 @@ namespace MedicoErp.Model.Entities.Admision
         public int IdCentro { get; set; }
 
         [Required]
+        public int IdCentroRemision { get; set; }
+
+        [Required]
         [StringLength(2)]
         public string Tipo { get; set; }
 
@@ -57,10 +60,22 @@ namespace MedicoErp.Model.Entities.Admision
         public CentroAtencion CentroAtencion { get; set; }
 
         [NotMapped]
+        public CentroAtencion CentroRemision { get; set; }
+
+        [NotMapped]
         public Convenio Convenio { get; set; }
 
         [NotMapped]
         public Paciente Paciente { get; set; }
+
+        [NotMapped]
+        public string sFechaNacimiento { get; set; }
+
+        [NotMapped]
+        public string sFechaPago { get; set; }
+
+        [NotMapped]
+        public string TipoUsuario { get; set; }
 
         [NotMapped]
         public List<Cita> ListaCitas { get; set; }

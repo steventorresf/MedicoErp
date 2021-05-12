@@ -5,6 +5,7 @@ using MedicoErp.Model.Context;
 using MedicoErp.Model.Entities.Admision;
 using MedicoErp.Model.Entities.General;
 using MedicoErp.Model.Entities.HistoriaClinica;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -35,14 +36,14 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                     Cita entityCit = context.Cita.Find(IdCita);
                     if (entityCit.IdEvento == null)
                     {
-                        CentroAtencion obCentro = context.CentroAtencion.Find(entityCit.IdCentro);
-                        obCentro.NoEvento++;
+                        Secuencia entitySec = context.Secuencia.FirstOrDefault(x => x.IdCentro == entityCit.IdCentro && x.TipoDoc.Equals("EV"));
+                        entitySec.NumDoc++;
                         context.SaveChanges();
 
                         Paciente entityPac = context.Paciente.Find(entityCit.IdPaciente);
 
                         Evento entityEve = new Evento();
-                        entityEve.NoEvento = obCentro.NoEvento;
+                        entityEve.NoEvento = entitySec.NumDoc;
                         entityEve.TipoEvento = "C";
                         entityEve.FechaEvento = DateTimeOffset.Now;
                         entityEve.IdCentro = entityCit.IdCentro;
@@ -52,7 +53,7 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                         entityEve.NumIden = entityPac.NumIden;
                         entityEve.NombreAcomp = entityCit.NombreAcomp;
                         entityEve.TelefonoAcomp = entityCit.TelefonoAcomp;
-                        entityEve.IdContrato = entityCit.IdConvenio;
+                        entityEve.IdConvenio = entityCit.IdConvenio;
                         entityEve.CodEstado = Constantes.EstadoPendiente;
                         entityEve.FechaCreado = DateTimeOffset.Now;
                         entityEve.CreadoPor = CreadoPor;
@@ -77,13 +78,61 @@ namespace MedicoErp.Model.Business.HistoriaClinica
             }
         }
 
+        public void CreateExt(Evento entity)
+        {
+            try
+            {
+                using (var tran = context.Database.BeginTransaction())
+                {
+                    Secuencia entitySec = context.Secuencia.FirstOrDefault(x => x.IdCentro == entity.IdCentro && x.TipoDoc.Equals("EV"));
+                    entitySec.NumDoc++;
+                    context.SaveChanges();
+
+                    entity.NoEvento = entitySec.NumDoc;
+                    entity.FechaEvento = DateTimeOffset.Now;
+                    entity.FechaCreado = DateTimeOffset.Now;
+                    context.Evento.Add(entity);
+                    context.SaveChanges();
+
+                    tran.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                errorBusiness.Create("CreateExt", ex, null);
+                throw;
+            }
+        }
+
+        public int Anular(JObject data)
+        {
+            try
+            {
+                long IdEvento = data["idEvento"].ToObject<long>();
+                string ModificadoPor = data["modificadoPor"].ToObject<string>();
+
+                Evento entity = context.Evento.FirstOrDefault(x => x.IdEvento == IdEvento);
+                entity.CodEstado = Constantes.EstadoAnulado;
+                entity.ModificadoPor = ModificadoPor;
+                entity.FechaModificado = DateTimeOffset.Now;
+                context.SaveChanges();
+
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                errorBusiness.Create("EventoAnular", ex, null);
+                throw;
+            }
+        }
+
         public Evento GetByIdEvento(long IdEvento)
         {
             try
             {
                 Evento entity = (from ev in context.Evento.Where(x => x.IdEvento == IdEvento)
                                   join pa in context.Paciente on ev.IdPaciente equals pa.IdPaciente
-                                  join co in context.Convenio on ev.IdContrato equals co.IdConvenio
+                                  join co in context.Convenio on ev.IdConvenio equals co.IdConvenio
                                   join me in context.Usuario on ev.IdMedico equals me.IdUsuario
                                   join ce in context.CentroAtencion on ev.IdCentro equals ce.IdCentro
                                   join tu in context.TablaDetalle.Where(x => x.CodTabla.Equals(Constantes.TabTipoUsuario)) on co.CodTipoUsuario equals tu.CodValor
@@ -108,7 +157,7 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                                       FechaModificado = ev.FechaModificado,
                                       FinalizadoPor = ev.FinalizadoPor,
                                       IdCentro = ev.IdCentro,
-                                      IdContrato = ev.IdContrato,
+                                      IdConvenio = ev.IdConvenio,
                                       IdPaciente = ev.IdPaciente,
                                       TipoUsuario = tu.Descripcion,
                                       EstadoCivil = ec.Descripcion,
@@ -118,10 +167,6 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                                       NoEvento = ev.NoEvento,
                                       NumIden = ev.NumIden,
                                       TipoDiag = ev.TipoDiag,
-                                      Evolucion = ev.Evolucion,
-                                      BiopsiaAnterior = ev.BiopsiaAnterior,
-                                      AyudasDiagnosticas = ev.AyudasDiagnosticas,
-                                      Anexos = ev.Anexos,
                                       sFechaNacimiento = pa.FechaNacimiento.ToString("dd/MM/yyyy"),
                                       Convenio = co,
                                       Paciente = pa,
@@ -129,6 +174,8 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                                       Centro = ce,
                                       DiagnosticoPal = null,
                                       DiagnosticoRel1 = null,
+                                      DiagnosticoRel2 = null,
+                                      DiagnosticoRel3 = null,
                                       Firma = Util.GetFirmaMedico(me.NomUsuario),
                                   }).FirstOrDefault();
 
@@ -140,6 +187,16 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                 if (!string.IsNullOrEmpty(entity.CodDiagRel1))
                 {
                     entity.DiagnosticoRel1 = context.Diagnostico.Find(entity.CodDiagRel1);
+                }
+
+                if (!string.IsNullOrEmpty(entity.CodDiagRel2))
+                {
+                    entity.DiagnosticoRel2 = context.Diagnostico.Find(entity.CodDiagRel2);
+                }
+
+                if (!string.IsNullOrEmpty(entity.CodDiagRel3))
+                {
+                    entity.DiagnosticoRel3 = context.Diagnostico.Find(entity.CodDiagRel3);
                 }
                 return entity;
             }
@@ -154,23 +211,25 @@ namespace MedicoErp.Model.Business.HistoriaClinica
         {
             try
             {
-                List<Evento> Lista = (from ev in context.Evento.Where(x => x.IdPaciente == IdPaciente && !x.CodEstado.Equals(Constantes.EstadoInactivo))
-                                       join me in context.Usuario on ev.IdMedico equals me.IdUsuario
-                                       join co in context.Convenio on ev.IdContrato equals co.IdConvenio
-                                       select new Evento()
-                                       {
-                                           IdEvento = ev.IdEvento,
-                                           CodEstado = ev.CodEstado,
-                                           FechaEvento = ev.FechaEvento,
-                                           CreadoPor = ev.CreadoPor,
-                                           FechaCreado = ev.FechaCreado,
-                                           FechaModificado = ev.FechaModificado,
-                                           ModificadoPor = ev.ModificadoPor,
-                                           NoEvento = ev.NoEvento,
-                                           Medico = me,
-                                           Convenio = co,
-                                           sFechaEvento = ev.FechaEvento.ToString("dd/MM/yyyy hh:mm tt", new CultureInfo("en-US"))
-                                       }).OrderByDescending(x => x.FechaEvento).ToList();
+                List<Evento> Lista = (from ev in context.Evento.Where(x => x.IdPaciente == IdPaciente && !x.CodEstado.Equals(Constantes.EstadoAnulado))
+                                      join me in context.Usuario on ev.IdMedico equals me.IdUsuario
+                                      join co in context.Convenio on ev.IdConvenio equals co.IdConvenio
+                                      select new Evento()
+                                      {
+                                          IdEvento = ev.IdEvento,
+                                          CodEstado = ev.CodEstado,
+                                          FechaEvento = ev.FechaEvento,
+                                          CreadoPor = ev.CreadoPor,
+                                          FechaCreado = ev.FechaCreado,
+                                          FechaModificado = ev.FechaModificado,
+                                          ModificadoPor = ev.ModificadoPor,
+                                          NoEvento = ev.NoEvento,
+                                          TipoEvento = ev.TipoEvento,
+                                          Medico = me,
+                                          Convenio = co,
+                                          sFechaEvento = ev.FechaEvento.ToString("dd/MM/yyyy hh:mm tt", new CultureInfo("en-US")),
+                                          DescripcionEvento = ev.NoEvento + " - " + ev.FechaEvento.ToString("dd/MM/yyyy") + " - " + co.NombreConvenio,
+                                      }).OrderByDescending(x => x.FechaEvento).ToList();
                 return Lista;
             }
             catch (Exception ex)
@@ -189,12 +248,10 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                     Evento entity = context.Evento.Find(IdEvento);
                     switch (Campo)
                     {
-                        case Constantes.CamEvolucion: entity.Evolucion = Dato; break;
-                        case Constantes.CamBiopsia: entity.BiopsiaAnterior = Dato; break;
-                        case Constantes.CamAyudaDx: entity.AyudasDiagnosticas = Dato; break;
-                        case Constantes.CamAnexos: entity.Anexos = Dato; break;
                         case Constantes.CamDiagPal: entity.CodDiagPal = Dato; break;
-                        case Constantes.CamDiagRel: entity.CodDiagRel1 = Dato; break;
+                        case Constantes.CamDiagRel1: entity.CodDiagRel1 = Dato; break;
+                        case Constantes.CamDiagRel2: entity.CodDiagRel2 = Dato; break;
+                        case Constantes.CamDiagRel3: entity.CodDiagRel3 = Dato; break;
                     }
                     entity.ModificadoPor = NombreUsuario;
                     entity.FechaModificado = DateTimeOffset.Now;
@@ -206,6 +263,98 @@ namespace MedicoErp.Model.Business.HistoriaClinica
             catch (Exception ex)
             {
                 errorBusiness.Create("UpdateEvento", ex, null);
+                throw;
+            }
+        }
+
+        public Evento GetEventoImpresion(long IdEvento, long IdFolio)
+        {
+            try
+            {
+                Evento entity = GetByIdEvento(IdEvento);
+                if (IdFolio > 0)
+                {
+                    entity.ListaFolios = (from fo in context.Folio.Where(x => x.IdFolio == IdFolio && x.IdEvento == IdEvento)
+                                          join fm in context.Formato on fo.IdFormato equals fm.IdFormato
+                                          select new Folio()
+                                          {
+                                              IdFolio = fo.IdFolio,
+                                              NoFolio = fo.NoFolio,
+                                              FechaFolio = fo.FechaFolio,
+                                              sFechaFolio = fo.FechaFolio.ToString("dd/MM/yyyy"),
+                                              CreadoPor = fo.CreadoPor,
+                                              Formato = fm,
+                                          }).OrderBy(x => x.Formato.Orden).ToList();
+                }
+                else
+                {
+                    entity.ListaFolios = (from fo in context.Folio.Where(x => x.IdEvento == IdEvento)
+                                          join fm in context.Formato on fo.IdFormato equals fm.IdFormato
+                                          select new Folio()
+                                          {
+                                              IdFolio = fo.IdFolio,
+                                              NoFolio = fo.NoFolio,
+                                              FechaFolio = fo.FechaFolio,
+                                              sFechaFolio = fo.FechaFolio.ToString("dd/MM/yyyy"),
+                                              CreadoPor = fo.CreadoPor,
+                                              Formato = fm,
+                                          }).OrderBy(x => x.Formato.Orden).ToList();
+                }
+                
+                foreach(Folio fo in entity.ListaFolios)
+                {
+                    var Lista = (from fd in context.FolioDetalle.Where(x => x.IdFolio == fo.IdFolio && !string.IsNullOrEmpty(x.Respuesta))
+                                 join pr in context.Pregunta on fd.IdPregunta equals pr.IdPregunta
+                                 join ar in context.Area on pr.IdArea equals ar.IdArea
+                                 select new
+                                 {
+                                     ar.IdArea,
+                                     ar.NombreArea,
+                                     OrdenArea = ar.Orden,
+                                     ar.Visible,
+                                     pr.IdPregunta,
+                                     pr.NombrePregunta,
+                                     OrdenPregunta = pr.Orden,
+                                     fd.Respuesta,
+                                 })
+                                 .GroupBy(x => new { x.IdArea, x.NombreArea, x.OrdenArea, x.Visible })
+                                 .Select(a => new
+                                 {
+                                     a.Key.IdArea,
+                                     a.Key.NombreArea,
+                                     a.Key.OrdenArea,
+                                     a.Key.Visible,
+                                     ListaDetalle = a.OrderBy(p => p.OrdenPregunta),
+                                 }).ToList();
+
+                    fo.ListaAreas = new List<Area>();
+                    foreach(var a in Lista)
+                    {
+                        Area entityAr = new Area();
+                        entityAr.IdArea = a.IdArea;
+                        entityAr.NombreArea = a.NombreArea;
+                        entityAr.Orden = a.OrdenArea;
+                        entityAr.Visible = a.Visible;
+                        entityAr.ListaPreguntas = new List<Pregunta>();
+
+                        foreach(var p in a.ListaDetalle)
+                        {
+                            Pregunta entityPr = new Pregunta();
+                            entityPr.IdPregunta = p.IdPregunta;
+                            entityPr.NombrePregunta = p.NombrePregunta;
+                            entityPr.Respuesta = p.Respuesta;
+                            entityAr.ListaPreguntas.Add(entityPr);
+                        }
+
+                        fo.ListaAreas.Add(entityAr);
+                    }                    
+                }
+
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                errorBusiness.Create("GetEventoImpresion", ex, null);
                 throw;
             }
         }

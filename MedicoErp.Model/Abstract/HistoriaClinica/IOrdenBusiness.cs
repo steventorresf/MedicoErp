@@ -1,4 +1,5 @@
 ﻿using MedicoErp.Model.Entities.HistoriaClinica;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,8 @@ namespace MedicoErp.Model.Abstract.HistoriaClinica
     {
         List<Orden> GetAllByIdEvento(long IdEvento);
         List<Orden> GetAllByIdPaciente(long IdPaciente);
-        void Create(Orden entity, int IdCentro);
+        void Create(Orden entity);
+        int Anular(JObject data);
         Orden GetOrdenImp(long IdOrden);
     }
 }

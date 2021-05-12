@@ -35,17 +35,18 @@ namespace MedicoErp.Model.Business.Admision
 
                 using (var tran = context.Database.BeginTransaction())
                 {
-                    CentroAtencion entityCen = context.CentroAtencion.Find(entity.IdCentro);
-
                     if (entity.Tipo.Equals(Constantes.FactFactura))
                     {
 
                     }
                     else
                     {
-                        entityCen.NoVolante++;
-                        entity.TipoDocumento = entityCen.PrefijoVol;
-                        entity.NumDocumento = entityCen.NoVolante;
+                        Secuencia entitySec = context.Secuencia.FirstOrDefault(x => x.IdCentro == entity.IdCentro && x.TipoDoc.Equals("VS"));
+                        entitySec.NumDoc++;
+                        context.SaveChanges();
+
+                        entity.TipoDocumento = entitySec.TipoDoc;
+                        entity.NumDocumento = entitySec.NumDoc;
                     }
 
                     entity.FechaPago = DateTimeOffset.Now;
@@ -76,6 +77,116 @@ namespace MedicoErp.Model.Business.Admision
             }
         }
 
+        public int CreateByFacturacionSinCita(JObject data)
+        {
+            try
+            {
+                Facturacion entity = data["dataEnc"].ToObject<Facturacion>();
+                List<Cita> listaCitas = data["dataDet"].ToObject<List<Cita>>();
+
+                using (var tran = context.Database.BeginTransaction())
+                {
+                    if (entity.Tipo.Equals(Constantes.FactFactura))
+                    {
+
+                    }
+                    else
+                    {
+                        Secuencia entitySec = context.Secuencia.FirstOrDefault(x => x.IdCentro == entity.IdCentro && x.TipoDoc.Equals("VS"));
+                        entitySec.NumDoc++;
+                        context.SaveChanges();
+
+                        entity.TipoDocumento = entitySec.TipoDoc;
+                        entity.NumDocumento = entitySec.NumDoc;
+                    }
+
+                    entity.FechaPago = DateTimeOffset.Now;
+                    entity.FechaCreado = DateTimeOffset.Now;
+                    context.Facturacion.Add(entity);
+                    context.SaveChanges();
+
+                    Secuencia entitySecCit = context.Secuencia.FirstOrDefault(x => x.IdCentro == entity.IdCentro && x.TipoDoc.Equals("CI"));
+                    Facturacion obFact = context.Facturacion.FirstOrDefault(x => x.NumDocumento == entity.NumDocumento && x.TipoDocumento.Equals(entity.TipoDocumento));
+                    foreach (Cita c in listaCitas)
+                    {
+                        entitySecCit.NumDoc++;
+                        c.IdFacturacion = obFact.IdFacturacion;
+                        c.NoCita = entitySecCit.NumDoc;
+                        c.IdReserva = null;
+                        c.FechaCreado = DateTimeOffset.Now;
+
+                        ServicioOrdenado entitySerOrd = context.ServicioOrdenado.FirstOrDefault(x => x.IdServicioOrdenado == c.IdServicioOrdenado);
+                        entitySerOrd.IdFacturacion = obFact.IdFacturacion;
+                        entitySerOrd.ModificadoPor = entity.CreadoPor;
+                        entitySerOrd.FechaModificado = DateTimeOffset.Now;
+                        context.SaveChanges();
+                    }
+
+                    context.Cita.AddRange(listaCitas);
+                    context.SaveChanges();
+
+                    tran.Commit();
+                    return obFact.IdFacturacion;
+                }
+            }
+            catch (Exception ex)
+            {
+                errorBusiness.Create("CreateFacturacion", ex, null);
+                throw;
+            }
+        }
+
+        public int GetIdDocumento(JObject data)
+        {
+            try
+            {
+                int IdFacturacion = -1;
+
+                string TipoDocumento = data["tipoDoc"].ToObject<string>();
+                long NumeroDocumento = data["numDoc"].ToObject<int>();
+                int IdCentro = data["idCentro"].ToObject<int>();
+
+                Facturacion entity = context.Facturacion.FirstOrDefault(x => x.NumDocumento == NumeroDocumento && x.TipoDocumento.Equals(TipoDocumento) && x.IdCentro == IdCentro);
+                if (entity != null)
+                {
+                    IdFacturacion = entity.IdFacturacion;
+                }
+
+                return IdFacturacion;
+            }
+            catch(Exception ex)
+            {
+                errorBusiness.Create("GetIdDocumentoFacturacion", ex, null);
+                throw;
+            }
+        }
+
+        public List<Facturacion> GetAllByIdPaciente(long IdPaciente)
+        {
+            try
+            {
+                List<Facturacion> Lista = (from fa in context.Facturacion.Where(x => x.IdPaciente == IdPaciente)
+                                           join co in context.Convenio on fa.IdConvenio equals co.IdConvenio
+                                           select new Facturacion()
+                                           {
+                                               IdFacturacion = fa.IdFacturacion,
+                                               TipoDocumento = fa.TipoDocumento,
+                                               NumDocumento = fa.NumDocumento,
+                                               FechaPago = fa.FechaPago,
+                                               sFechaPago = fa.FechaPago.ToString("dd/MM/yyyy"),
+                                               IdConvenio = fa.IdConvenio,
+                                               Convenio = co,
+                                               CreadoPor = fa.CreadoPor,
+                                               CodEstado = fa.CodEstado,
+                                           }).OrderBy(x => x.FechaCreado).ToList();
+                return Lista;
+            }
+            catch (Exception ex)
+            {
+                errorBusiness.Create("GetAllByIdPacienteFacturacion", ex, null);
+                throw;
+            }
+        }
 
         public Facturacion GetFacturacionImpresion(int IdFacturacion)
         {
@@ -84,11 +195,14 @@ namespace MedicoErp.Model.Business.Admision
                 Facturacion entity = (from fac in context.Facturacion.Where(x => x.IdFacturacion == IdFacturacion)
                                       join pac in context.Paciente on fac.IdPaciente equals pac.IdPaciente
                                       join con in context.Convenio on fac.IdConvenio equals con.IdConvenio
+                                      join tus in context.TablaDetalle.Where(x => x.CodTabla.Equals(Constantes.TabTipoUsuario)) on con.CodTipoUsuario equals tus.CodValor
                                       join cen in context.CentroAtencion on fac.IdCentro equals cen.IdCentro
+                                      join cer in context.CentroAtencion on fac.IdCentroRemision equals cer.IdCentro
                                       select new Facturacion()
                                       {
                                           IdFacturacion = fac.IdFacturacion,
                                           IdCentro = fac.IdCentro,
+                                          IdCentroRemision = fac.IdCentroRemision,
                                           IdPaciente = pac.IdPaciente,
                                           IdConvenio = fac.IdConvenio,
                                           FechaPago = fac.FechaPago,
@@ -103,24 +217,32 @@ namespace MedicoErp.Model.Business.Admision
                                           IdResolucion = fac.IdResolucion,
                                           MotivoAnu = fac.MotivoAnu,
                                           CentroAtencion = cen,
+                                          CentroRemision = cer,
                                           Paciente = pac,
                                           Convenio = con,
+                                          sFechaPago = fac.FechaPago.ToString("dd/MM/yyyy"),
+                                          sFechaNacimiento = pac.FechaNacimiento.ToString("dd/MM/yyyy"),
+                                          TipoUsuario = tus.Descripcion,
                                       }).FirstOrDefault();
 
                 entity.ListaCitas = (from ci in context.Cita.Where(x => x.IdFacturacion == IdFacturacion)
                                      join se in context.Servicio on ci.IdServicio equals se.IdServicio
-                                     join me in context.Usuario on ci.IdMedico equals me.IdUsuario
+                                     join me in context.Usuario on ci.IdMedico equals me.IdUsuario into LeftJoin
+                                     from LF in LeftJoin.DefaultIfEmpty()
                                      select new Cita()
                                      {
                                          IdCita = ci.IdCita,
                                          IdServicio = ci.IdServicio,
+                                         CodigoRef = se.CodigoRef,
                                          NombreServicio = se.NombreServicio,
-                                         NombreMedico = me.NombreCompleto,
+                                         NombreMedico = LF != null ? LF.NombreCompleto : "",
                                          Fecha = ci.Fecha,
                                          SFecha = ci.Fecha.ToString("dd/MM/yyyy"),
                                          Hora = ci.Hora,
                                          Cantidad = ci.Cantidad,
                                          Tarifa = ci.Tarifa,
+                                         Descuento = ci.Descuento,
+                                         VrTotal = ci.Tarifa - ci.Descuento,
                                      }).ToList();
                 return entity;
             }

@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewData["Title"] = "Consultar Documentos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="RowBusqueda" class="row mt-5">
+    <div class="col-12 offset-lg-1 col-lg-10">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>B&uacute;squeda por documento</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="form1" name="form1" novalidate="novalidate" class="form-inline">
+                            <div class="form-group">
+                                <select class="form-control" ng-model="vm.entityBusq.tipoDoc" required>
+                                    <option value="VS">VS</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Número documento" ng-model="vm.entityBusq.numDoc" required>
+                            </div>
+                            <button class="btn btn-primary ml-2" ng-click="vm.consultarByDoc()" ng-disabled="form1.$invalid">Buscar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>B&uacute;squeda por paciente</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="form2" name="form2" novalidate="novalidate" class="form-inline">
+                            <div class="form-group">
+                                <ui-select ng-model="vm.entityBusq.tipoDocPac"
+                                           form="form2"
+                                           theme="bootstrap"
+                                           required>
+                                    <ui-select-match placeholder="Seleccione...">{{ $select.selected.descripcion }}</ui-select-match>
+                                    <ui-select-choices repeat="item.codValor as item in vm.listTiposIden | filter: $select.search" style="width:350px !important">
+                                        <div ng-bind-html="item.descripcion | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Número documento" ng-model="vm.entityBusq.numDocPac" required>
+                            </div>
+                            <button class="btn btn-primary ml-2" ng-click="vm.consultarByPac()" ng-disabled="form2.$invalid">Buscar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="RowPaciente" class="row mt-3" hidden="hidden">
+    <div class="col-12 offset-lg-1 col-lg-10">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <button class="btn btn-default" ng-click="vm.regresar()">Regresar</button>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <table class="tabla nohover">
+                                    <tr>
+                                        <td><b>Paciente:</b></td>
+                                        <td>{{vm.entityPac.nombrePaciente}}</td>
+                                        <td><b>Identificaci&oacute;n:</b></td>
+                                        <td>{{vm.entityPac.tipoIden + ' ' + vm.entityPac.numIden}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="fontsize-10" ui-grid="vm.gridOptions" ui-grid-resize-columns ui-grid-auto-resize></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/master/controllers/admision/consultarDocs.controller.js"></script>

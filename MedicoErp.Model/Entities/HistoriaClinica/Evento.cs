@@ -50,15 +50,7 @@ namespace MedicoErp.Model.Entities.HistoriaClinica
         public string TelefonoAcomp { get; set; }
 
         [Required]
-        public int IdContrato { get; set; }
-
-        public string Evolucion { get; set; }
-
-        public string BiopsiaAnterior { get; set; }
-
-        public string AyudasDiagnosticas { get; set; }
-
-        public string Anexos { get; set; }
+        public int IdConvenio { get; set; }
 
         [StringLength(4)]
         public string CodDiagPal { get; set; }
@@ -126,6 +118,18 @@ namespace MedicoErp.Model.Entities.HistoriaClinica
         public Diagnostico DiagnosticoRel1 { get; set; }
 
         [NotMapped]
+        public Diagnostico DiagnosticoRel2 { get; set; }
+
+        [NotMapped]
+        public Diagnostico DiagnosticoRel3 { get; set; }
+
+        [NotMapped]
         public string Firma { get; set; }
+
+        [NotMapped]
+        public string DescripcionEvento { get; set; }
+
+        [NotMapped]
+        public List<Folio> ListaFolios { get; set; }
     }
 }

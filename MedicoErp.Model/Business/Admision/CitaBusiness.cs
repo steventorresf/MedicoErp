@@ -5,6 +5,7 @@ using MedicoErp.Model.Common;
 using MedicoErp.Model.Context;
 using MedicoErp.Model.Entities.Admision;
 using MedicoErp.Model.Entities.General;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -27,32 +28,39 @@ namespace MedicoErp.Model.Business.Admision
         }
 
 
-        public bool Create(Cita entity)
+        public long Create(Cita entity)
         {
             try
             {
                 using (var tran = context.Database.BeginTransaction())
                 {
-                    bool Valido = true;
+                    long idCita = -1;
 
                     Horario horario = context.Horario.Find(entity.IdReserva);
                     if (horario.CodEstado.Equals(Constantes.EstadoAgendado))
                     {
-                        Valido = false;
+                        idCita = -1;
                     }
                     else
                     {
+                        Secuencia entitySec = context.Secuencia.FirstOrDefault(x => x.IdCentro == entity.IdCentro && x.TipoDoc.Equals("CI"));
+                        entitySec.NumDoc++;
+                        context.SaveChanges();
+                        
                         horario.CodEstado = Constantes.EstadoAgendado;
 
+                        entity.NoCita = entitySec.NumDoc;
                         entity.Hora = horario.HoraInicial.ToString("hh:mm tt", new CultureInfo("en-US"));
                         entity.FechaCreado = DateTimeOffset.Now;
                         context.Cita.Add(entity);
                         context.SaveChanges();
+
+                        idCita = context.Cita.FirstOrDefault(x => x.NoCita == entity.NoCita && x.IdCentro == entity.IdCentro).IdCita;
                     }
 
                     tran.Commit();
 
-                    return Valido;
+                    return idCita;
                 }
             }
             catch (Exception ex)
@@ -81,7 +89,7 @@ namespace MedicoErp.Model.Business.Admision
                         context.SaveChanges();
 
                         Cita obCita = context.Cita.Find(IdCita);
-                        long IdHorarioOld = obCita.IdReserva;
+                        long IdHorarioOld = Convert.ToInt64(obCita.IdReserva);
 
                         obCita.IdReserva = horarioNew.IdHorario;
                         obCita.Fecha = horarioNew.Fecha;
@@ -109,17 +117,22 @@ namespace MedicoErp.Model.Business.Admision
             }
         }
 
-        public void UpdateTarifa(long IdCita, decimal Tarifa)
+        public void UpdateTarifaDescuento(JObject data)
         {
             try
             {
+                long IdCita = data["idCita"].ToObject<long>();
+                decimal Tarifa = data["tarifa"].ToObject<decimal>();
+                decimal Descuento = data["descuento"].ToObject<decimal>();
+
                 Cita entity = context.Cita.Find(IdCita);
                 entity.Tarifa = Tarifa;
+                entity.Descuento = Descuento;
                 context.SaveChanges();
             }
             catch (Exception ex)
             {
-                errorBusiness.Create("UpdateTarifa", ex, null);
+                errorBusiness.Create("UpdateTarifaDescuento", ex, null);
                 throw;
             }
         }
@@ -207,6 +220,7 @@ namespace MedicoErp.Model.Business.Admision
                                         NombreServicio = se.NombreServicio,
                                         NombreMedico = me.NombreCompleto,
                                         Tarifa = ci.Tarifa,
+                                        Descuento = ci.Descuento,
                                     }).OrderByDescending(x => x.Fecha).ToList();
                 return Lista;
             }
@@ -260,11 +274,10 @@ namespace MedicoErp.Model.Business.Admision
         {
             try
             {
-                List<Cita> Lista = (from ci in context.Cita.Where(x => x.IdMedico == IdMedico && x.Fecha == Fecha && (x.CodEstado.Equals(Constantes.EstadoAgendado) || x.CodEstado.Equals(Constantes.EstadoConfirmado)))
+                List<Cita> Lista = (from ci in context.Cita.Where(x => x.IdMedico == IdMedico && x.Fecha == Fecha && !x.CodEstado.Equals(Constantes.EstadoCancelado))
                                     join se in context.Servicio on ci.IdServicio equals se.IdServicio
                                     join co in context.Convenio on ci.IdConvenio equals co.IdConvenio
                                     join pa in context.Paciente on ci.IdPaciente equals pa.IdPaciente
-                                    join ho in context.Horario on ci.IdReserva equals ho.IdHorario
                                     join es in context.TablaDetalle.Where(x => x.CodTabla.Equals(Constantes.TabEstados)) on ci.CodEstado equals es.CodValor
                                     select new Cita()
                                     {
@@ -283,14 +296,48 @@ namespace MedicoErp.Model.Business.Admision
                                         NombreEstado = es.Descripcion,
                                         Identificacion = pa.TipoIden + " " + pa.NumIden,
                                         NombrePaciente = pa.NombrePaciente,
-                                        Hora = ho.HoraInicial.ToString("hh:mm tt", new CultureInfo("es-CO")),
-                                        Tarifa = ci.Tarifa
-                                    }).OrderByDescending(x => x.Hora).ToList();
+                                        Hora = ci.Hora,
+                                        Tarifa = ci.Tarifa,
+                                        Descuento = ci.Descuento,
+                                    }).OrderBy(x => x.IdReserva).OrderBy(x => x.Fecha).ToList();
                 return Lista;
             }
             catch (Exception ex)
             {
                 errorBusiness.Create("GetMiAgendaFecha", ex, null);
+                throw;
+            }
+        }
+
+        public Cita GetImpresion(int IdCita)
+        {
+            try
+            {
+                Cita entity = (from ci in context.Cita.Where(x => x.IdCita == IdCita)
+                               join ce in context.CentroAtencion on ci.IdCentro equals ce.IdCentro
+                               join pa in context.Paciente on ci.IdPaciente equals pa.IdPaciente
+                               join co in context.Convenio on ci.IdConvenio equals co.IdConvenio
+                               join se in context.Servicio on ci.IdServicio equals se.IdServicio
+                               join me in context.Usuario on ci.IdMedico equals me.IdUsuario
+                               select new Cita()
+                               {
+                                   IdCita = ci.IdCita,
+                                   NoCita = ci.NoCita,
+                                   NombrePaciente = pa.NombrePaciente,
+                                   Identificacion = pa.TipoIden + " " + pa.NumIden,
+                                   NombreConvenio = co.NombreConvenio,
+                                   NombreServicio = se.CodigoRef + " - " + se.NombreServicio,
+                                   NombreCentro = ce.NombreCentro,
+                                   DireccionCentro = ce.Direccion,
+                                   NombreMedico = me.NombreCompleto,
+                                   SFecha = ci.Fecha.ToString("dd/MM/yyyy"),
+                                   Hora = ci.Hora,
+                               }).FirstOrDefault();
+                return entity;
+            }
+            catch(Exception ex)
+            {
+                errorBusiness.Create("GetCitaImpresion", ex, null);
                 throw;
             }
         }
@@ -302,14 +349,14 @@ namespace MedicoErp.Model.Business.Admision
                 using (var tran = context.Database.BeginTransaction())
                 {
 
-                    CentroAtencion entityCen = context.CentroAtencion.Find(obCita.IdCentro);
-                    entityCen.NoVolante++;
+                    Secuencia entitySec = context.Secuencia.FirstOrDefault(x => x.IdCentro == obCita.IdCentro && x.TipoDoc.Equals("VS"));
+                    entitySec.NumDoc++;
                     context.SaveChanges();
 
                     Facturacion entityFac = new Facturacion();
                     entityFac.Tipo = "VO";
-                    entityFac.TipoDocumento = entityCen.PrefijoVol;
-                    entityFac.NumDocumento = entityCen.NoVolante;
+                    entityFac.TipoDocumento = entitySec.TipoDoc;
+                    entityFac.NumDocumento = entitySec.NumDoc;
                     entityFac.IdConvenio = obCita.IdConvenio;
                     entityFac.IdPaciente = obCita.IdPaciente;
                     entityFac.IdCentro = obCita.IdCentro;
@@ -342,47 +389,49 @@ namespace MedicoErp.Model.Business.Admision
 
 
 
-        // Excel
-        public byte[] ExcelAgendaMedica(string Fi, string Ff, int Im, string Nm)
+        // Informes
+        public List<Cita> GetActividades(string FechaIni, string FechaFin, int IdCentro)
         {
             try
             {
-                DateTime FechaIni = Convert.ToDateTime(Fi);
-                DateTime FechaFin = Convert.ToDateTime(Ff);
+                DateTime FechaInicial = Convert.ToDateTime(FechaIni);
+                DateTime FechaFinal = Convert.ToDateTime(FechaFin);
 
-                List<Cita> Lista = GetAgendaMedica(FechaIni, FechaFin, Im);
-                IXLWorkbook workbook = new XLWorkbook();
-                IXLWorksheet worksheet = workbook.Worksheets.Add(Nm);
-
-                int irow = 1;
-                worksheet.Cell(irow, 1).SetValue("Fecha").Style.Font.SetBold(true);
-                worksheet.Cell(irow, 2).SetValue("Hora").Style.Font.SetBold(true);
-                worksheet.Cell(irow, 3).SetValue("Paciente").Style.Font.SetBold(true);
-                worksheet.Cell(irow, 4).SetValue("Identificación").Style.Font.SetBold(true);
-                worksheet.Cell(irow, 5).SetValue("Teléfono").Style.Font.SetBold(true);
-                worksheet.Cell(irow, 6).SetValue("Convenio").Style.Font.SetBold(true);
-                worksheet.Cell(irow, 7).SetValue("Servicio").Style.Font.SetBold(true);
-
-                foreach (Cita c in Lista)
-                {
-                    irow++;
-                    worksheet.Cell(irow, 1).Value = c.SFecha;
-                    worksheet.Cell(irow, 2).Value = c.Hora;
-                    worksheet.Cell(irow, 3).Value = c.NombrePaciente;
-                    worksheet.Cell(irow, 4).Value = c.Identificacion;
-                    worksheet.Cell(irow, 5).Value = c.Telefono;
-                    worksheet.Cell(irow, 6).Value = c.NombreConvenio;
-                    worksheet.Cell(irow, 7).Value = c.NombreServicio;
-                }
-
-                MemoryStream ms = new MemoryStream();
-                workbook.SaveAs(ms);
-
-                return ms.ToArray();
+                List<Cita> Lista = (from ci in context.Cita.Where(x => x.Fecha >= FechaInicial && x.Fecha <= FechaFinal && x.IdCentro == IdCentro && !x.CodEstado.Equals(Constantes.EstadoCancelado))
+                                    join pa in context.Paciente on ci.IdPaciente equals pa.IdPaciente
+                                    join se in context.Servicio on ci.IdServicio equals se.IdServicio
+                                    join cs in context.ClaseServicio on se.IdClaseServicio equals cs.IdClaseServicio
+                                    join co in context.Convenio on ci.IdConvenio equals co.IdConvenio
+                                    join cr in context.CentroAtencion on ci.IdCentroRemision equals cr.IdCentro
+                                    join me in context.Usuario on ci.IdMedico equals me.IdUsuario into LeftJoinUs
+                                    from LJMe in LeftJoinUs.DefaultIfEmpty()
+                                    join fa in context.Facturacion on ci.IdFacturacion equals fa.IdFacturacion into LeftJoinFa
+                                    from LJFa in LeftJoinFa.DefaultIfEmpty()
+                                    select new Cita()
+                                    {
+                                        Fecha = ci.Fecha,
+                                        TipoDocumento = LJFa == null ? "" : LJFa.TipoDocumento,
+                                        NumDocumento = LJFa == null ? "" : LJFa.NumDocumento.ToString(),
+                                        NombreCentro = cr.NombreCentro,
+                                        TipoIdentificacion = pa.TipoIden,
+                                        Identificacion = pa.NumIden,
+                                        NombrePaciente = pa.NombrePaciente,
+                                        Telefono = pa.Telefono,
+                                        NombreConvenio = co.NombreConvenio,
+                                        NombreMedico = LJMe == null ? "" : LJMe.NombreCompleto,
+                                        CodigoRef = se.CodigoRef,
+                                        NombreClaseServicio = cs.NombreClaseServicio,
+                                        NombreServicio = se.NombreServicio,
+                                        Cantidad = ci.Cantidad,
+                                        Tarifa = ci.Tarifa - ci.Descuento,
+                                        Descuento = ci.Descuento,
+                                        VrTotal = ci.Cantidad * (ci.Tarifa - ci.Descuento),
+                                    }).OrderBy(x => x.Fecha).ToList();
+                return Lista;
             }
             catch (Exception ex)
             {
-                errorBusiness.Create("GetAgendaMedica", ex, null);
+                errorBusiness.Create("GetActividades", ex, null);
                 throw;
             }
         }

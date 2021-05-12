@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MedicoErp.Model.Entities.Admision
 {
-    [Table("ServicioContratado", Schema = "Admision")]
+    [Table("ConvenioServicio", Schema = "Admision")]
     public class ConvenioServicio
     {
         [Key]

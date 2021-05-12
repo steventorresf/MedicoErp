@@ -11,6 +11,9 @@ namespace MedicoErp.Model.Abstract.Admision
     public interface IFacturacionBusiness
     {
         int CreateByFacturacion(JObject data);
+        int CreateByFacturacionSinCita(JObject data);
+        int GetIdDocumento(JObject data);
+        List<Facturacion> GetAllByIdPaciente(long IdPaciente);
         Facturacion GetFacturacionImpresion(int IdFacturacion);
     }
 }

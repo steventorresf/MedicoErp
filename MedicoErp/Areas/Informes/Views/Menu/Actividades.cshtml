@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "Actividades";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-5">
+    <div class="col-12 offset-md-1 col-md-10 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <form id="formApp" name="formApp" novalidate="novalidate" class="form-horizontal">
+                    <div class="form-group">
+                        <label>Fecha Inicial:</label>
+                        <input type="date" class="form-control" form="formApp" placeholder="Fecha Inicial..." ng-model="vm.entityBusq.sFechaInicial" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha Final:</label>
+                        <input type="date" class="form-control" form="formApp" placeholder="Fecha Final..." ng-model="vm.entityBusq.sFechaFinal" required />
+                    </div>
+                    <button class="btn btn-primary" ng-disabled="formApp.$invalid" ng-click="vm.generar()">Generar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/master/controllers/informes/actividades.controller.js"></script>

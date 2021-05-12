@@ -4,6 +4,7 @@ using MedicoErp.Model.Common;
 using MedicoErp.Model.Context;
 using MedicoErp.Model.Entities.General;
 using MedicoErp.Model.Entities.HistoriaClinica;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -59,7 +60,7 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                 List<Formulacion> Lista = (from ev in context.Evento.Where(x => x.IdPaciente == IdPaciente)
                                              join fr in context.Formulacion on ev.IdEvento equals fr.IdEvento
                                              join me in context.Usuario on fr.IdMedico equals me.IdUsuario
-                                             join co in context.Convenio on ev.IdContrato equals co.IdConvenio
+                                             join co in context.Convenio on ev.IdConvenio equals co.IdConvenio
                                              where !fr.CodEstado.Equals(Constantes.EstadoInactivo) && !ev.CodEstado.Equals(Constantes.EstadoInactivo)
                                              select new Formulacion()
                                              {
@@ -85,17 +86,17 @@ namespace MedicoErp.Model.Business.HistoriaClinica
             }
         }
 
-        public void Create(Formulacion entity, int IdCentro)
+        public void Create(Formulacion entity)
         {
             try
             {
                 using (var tran = context.Database.BeginTransaction())
                 {
-                    CentroAtencion entityCen = context.CentroAtencion.Find(IdCentro);
-                    entityCen.NoFormulacion++;
+                    Secuencia entitySec = context.Secuencia.FirstOrDefault(x => x.IdCentro == entity.IdCentro && x.TipoDoc.Equals("FR"));
+                    entitySec.NumDoc++;
                     context.SaveChanges();
 
-                    entity.NoFormulacion = entityCen.NoFormulacion;
+                    entity.NoFormulacion = entitySec.NumDoc;
                     entity.FechaCreado = DateTimeOffset.Now;
                     entity.FechaFormulacion = DateTimeOffset.Now;
 
@@ -136,33 +137,61 @@ namespace MedicoErp.Model.Business.HistoriaClinica
             }
         }
 
+        public int Anular(JObject data)
+        {
+            try
+            {
+                long IdFormulacion = data["idFormulacion"].ToObject<long>();
+                string modificadoPor = data["modificadoPor"].ToObject<string>();
+
+                using (var tran = context.Database.BeginTransaction())
+                {
+                    Formulacion entity = context.Formulacion.FirstOrDefault(x => x.IdFormulacion == IdFormulacion);
+                    entity.CodEstado = Constantes.EstadoAnulado;
+                    entity.ModificadoPor = modificadoPor;
+                    entity.FechaModificado = DateTimeOffset.Now;
+                    context.SaveChanges();
+
+                    tran.Commit();
+
+                    return 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                errorBusiness.Create("FormulacionAnular", ex, null);
+                throw;
+            }
+        }
+
         public Formulacion GetFormulacionImp(long IdFormulacion)
         {
             try
             {
                 Formulacion entity = (from fr in context.Formulacion.Where(x => x.IdFormulacion == IdFormulacion)
-                                        join ev in context.Evento on fr.IdEvento equals ev.IdEvento
-                                        join pa in context.Paciente on ev.IdPaciente equals pa.IdPaciente
-                                        join ce in context.CentroAtencion on ev.IdCentro equals ce.IdCentro
-                                        join co in context.Convenio on ev.IdContrato equals co.IdConvenio
-                                        join me in context.Usuario on fr.IdMedico equals me.IdUsuario
-                                        join tu in context.TablaDetalle.Where(x => x.CodTabla.Equals(Constantes.TabTipoUsuario)) on co.CodTipoUsuario equals tu.CodValor
-                                        select new Formulacion()
-                                        {
-                                            NoFormulacion = fr.NoFormulacion,
-                                            Centro = ce,
-                                            Paciente = pa,
-                                            Convenio = co,
-                                            Medico = me,
-                                            NombreConvenio = co.NombreConvenio,
-                                            sFechaNacimiento = pa.FechaNacimiento.ToString("dd/MM/yyyy"),
-                                            sFechaFormulacion = fr.FechaFormulacion.ToString("dd/MM/yyyy"),
-                                            TipoUsuario = tu.Descripcion,
-                                            CreadoPor = fr.CreadoPor,
-                                            TiempoEvo = fr.TiempoEvo == null ? "" : fr.TiempoEvo,
-                                            ProxControl = fr.ProxControl == null ? "" : fr.ProxControl,
-                                            Firma = Util.GetFirmaMedico(me.NomUsuario),
-                                        }).FirstOrDefault();
+                                      join ev in context.Evento on fr.IdEvento equals ev.IdEvento
+                                      join pa in context.Paciente on ev.IdPaciente equals pa.IdPaciente
+                                      join ce in context.CentroAtencion on ev.IdCentro equals ce.IdCentro
+                                      join co in context.Convenio on ev.IdConvenio equals co.IdConvenio
+                                      join me in context.Usuario on fr.IdMedico equals me.IdUsuario
+                                      join tu in context.TablaDetalle.Where(x => x.CodTabla.Equals(Constantes.TabTipoUsuario)) on co.CodTipoUsuario equals tu.CodValor
+                                      select new Formulacion()
+                                      {
+                                          NoFormulacion = fr.NoFormulacion,
+                                          Centro = ce,
+                                          Paciente = pa,
+                                          Convenio = co,
+                                          Medico = me,
+                                          NombreConvenio = co.NombreConvenio,
+                                          sFechaNacimiento = pa.FechaNacimiento.ToString("dd/MM/yyyy"),
+                                          sFechaFormulacion = fr.FechaFormulacion.ToString("dd/MM/yyyy"),
+                                          TipoUsuario = tu.Descripcion,
+                                          CreadoPor = fr.CreadoPor,
+                                          TiempoEvo = fr.TiempoEvo == null ? "" : fr.TiempoEvo,
+                                          ProxControl = fr.ProxControl == null ? "" : fr.ProxControl,
+                                          Observaciones = fr.Observaciones == null ? "" : fr.Observaciones,
+                                          Firma = Util.GetFirmaMedico(me.NomUsuario),
+                                      }).FirstOrDefault();
 
                 entity.ListFormulacionDetalle = (from fd in context.FormulacionDetalle.Where(x => x.IdFormulacion == IdFormulacion)
                                                  join va in context.TablaDetalle.Where(x => x.CodTabla.Equals(Constantes.TabViasAdmon)) on fd.CodViaAdmon equals va.CodValor

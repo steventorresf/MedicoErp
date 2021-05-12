@@ -1,0 +1,11 @@
+C:\Repositorios\MedicoErp_\MedicoErp.Model\bin\Release\netcoreapp2.1\MedicoErp.Model.deps.json
+C:\Repositorios\MedicoErp_\MedicoErp.Model\bin\Release\netcoreapp2.1\MedicoErp.Model.dll
+C:\Repositorios\MedicoErp_\MedicoErp.Model\bin\Release\netcoreapp2.1\MedicoErp.Model.pdb
+C:\Repositorios\MedicoErp_\MedicoErp.Model\bin\Release\netcoreapp2.1\itextsharp.dll
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\netcoreapp2.1\MedicoErp.Model.csprojAssemblyReference.cache
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\netcoreapp2.1\MedicoErp.Model.AssemblyInfoInputs.cache
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\netcoreapp2.1\MedicoErp.Model.AssemblyInfo.cs
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\netcoreapp2.1\MedicoErp.Model.csproj.CoreCompileInputs.cache
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\netcoreapp2.1\MedicoErp.Model.csproj.CopyComplete
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\netcoreapp2.1\MedicoErp.Model.dll
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\netcoreapp2.1\MedicoErp.Model.pdb

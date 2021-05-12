@@ -1,5 +1,6 @@
 ﻿using MedicoErp.Model.Common;
 using MedicoErp.Model.Entities.General;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,6 @@ namespace MedicoErp.Model.Abstract.General
         void Activar(int IdUsuario);
         void Inactivar(int IdUsuario);
         void ResetearClave(int IdUsuario);
+        int UpdateContraseña(JObject data);
     }
 }

@@ -2,8 +2,10 @@
 using MedicoErp.Model.Abstract.HistoriaClinica;
 using MedicoErp.Model.Common;
 using MedicoErp.Model.Context;
+using MedicoErp.Model.Entities.Admision;
 using MedicoErp.Model.Entities.General;
 using MedicoErp.Model.Entities.HistoriaClinica;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -59,7 +61,7 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                 List<Orden> Lista = (from ev in context.Evento.Where(x => x.IdPaciente == IdPaciente)
                                        join or in context.Orden on ev.IdEvento equals or.IdEvento
                                        join me in context.Usuario on or.IdMedico equals me.IdUsuario
-                                       join co in context.Convenio on ev.IdContrato equals co.IdConvenio
+                                       join co in context.Convenio on ev.IdConvenio equals co.IdConvenio
                                        where !or.CodEstado.Equals(Constantes.EstadoInactivo) && !ev.CodEstado.Equals(Constantes.EstadoInactivo)
                                        select new Orden()
                                        {
@@ -85,17 +87,17 @@ namespace MedicoErp.Model.Business.HistoriaClinica
             }
         }
 
-        public void Create(Orden entity, int IdCentro)
+        public void Create(Orden entity)
         {
             try
             {
                 using (var tran = context.Database.BeginTransaction())
                 {
-                    CentroAtencion entityCen = context.CentroAtencion.Find(IdCentro);
-                    entityCen.NoOrden++;
+                    Secuencia entitySec = context.Secuencia.FirstOrDefault(x => x.IdCentro == entity.IdCentro && x.TipoDoc.Equals("OR"));
+                    entitySec.NumDoc++;
                     context.SaveChanges();
 
-                    entity.NoOrden = entityCen.NoOrden;
+                    entity.NoOrden = entitySec.NumDoc;
                     entity.FechaOrden = DateTime.Now;
                     entity.FechaCreado = DateTimeOffset.Now;
 
@@ -105,7 +107,9 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                     Orden obOrd = context.Orden.FirstOrDefault(x => x.NoOrden == entity.NoOrden && x.IdEvento == entity.IdEvento);
                     List<OrdenDetalleTemp> listDetalleTemp = context.OrdenDetalleTemp.Where(x => x.IdUsuario == entity.IdMedico).ToList();
 
+                    Evento entityEve = context.Evento.Find(entity.IdEvento);
                     List<OrdenDetalle> listDetalle = new List<OrdenDetalle>();
+                    List<ServicioOrdenado> listServiciosordenados = new List<ServicioOrdenado>();
                     foreach (OrdenDetalleTemp tmp in listDetalleTemp)
                     {
                         OrdenDetalle entityDet = new OrdenDetalle();
@@ -115,9 +119,26 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                         entityDet.CreadoPor = entity.CreadoPor;
                         entityDet.FechaCreado = DateTimeOffset.Now;
                         listDetalle.Add(entityDet);
+
+                        ServicioOrdenado entitySerOrd = new ServicioOrdenado();
+                        entitySerOrd.IdCentro = obOrd.IdCentro;
+                        entitySerOrd.IdPaciente = entityEve.IdPaciente;
+                        entitySerOrd.IdOrden = obOrd.IdOrden;
+                        entitySerOrd.Fecha = obOrd.FechaOrden;
+                        entitySerOrd.IdServicio = tmp.IdServicio;
+                        entitySerOrd.IdConvenio = entityEve.IdConvenio;
+                        entitySerOrd.Cantidad = tmp.Cantidad;
+                        entitySerOrd.Tarifa = tmp.Tarifa;
+                        entitySerOrd.Descuento = tmp.Descuento;
+                        entitySerOrd.FechaCreado = DateTimeOffset.Now;
+                        entitySerOrd.CreadoPor = obOrd.CreadoPor;
+                        listServiciosordenados.Add(entitySerOrd);
                     }
 
                     context.OrdenDetalle.AddRange(listDetalle);
+                    context.SaveChanges();
+
+                    context.ServicioOrdenado.AddRange(listServiciosordenados);
                     context.SaveChanges();
 
                     context.OrdenDetalleTemp.RemoveRange(listDetalleTemp);
@@ -133,6 +154,45 @@ namespace MedicoErp.Model.Business.HistoriaClinica
             }
         }
 
+        public int Anular(JObject data)
+        {
+            try
+            {
+                long IdOrden = data["idOrden"].ToObject<long>();
+                string ModificadoPor = data["modificadoPor"].ToObject<string>();
+
+                using(var tran = context.Database.BeginTransaction())
+                {
+                    List<ServicioOrdenado> ListaOrdenados = context.ServicioOrdenado.Where(x => x.IdOrden == IdOrden).ToList();
+                    bool YaFact = ListaOrdenados.Where(x => x.IdFacturacion != null && x.IdFacturacion > 0).Any();
+                    if (!YaFact)
+                    {
+                        Orden entity = context.Orden.FirstOrDefault(x => x.IdOrden == IdOrden);
+                        entity.CodEstado = Constantes.EstadoAnulado;
+                        entity.ModificadoPor = ModificadoPor;
+                        entity.FechaModificado = DateTimeOffset.Now;
+                        context.SaveChanges();
+
+                        context.ServicioOrdenado.RemoveRange(ListaOrdenados);
+                        context.SaveChanges();
+
+                        tran.Commit();
+                        return 1;
+                    }
+                    else
+                    {
+                        tran.Commit();
+                        return -1;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                errorBusiness.Create("OrdenAnular", ex, null);
+                throw;
+            }
+        }
+
         public Orden GetOrdenImp(long IdOrden)
         {
             try
@@ -141,7 +201,7 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                                   join ev in context.Evento on or.IdEvento equals ev.IdEvento
                                   join pa in context.Paciente on ev.IdPaciente equals pa.IdPaciente
                                   join ce in context.CentroAtencion on ev.IdCentro equals ce.IdCentro
-                                  join co in context.Convenio on ev.IdContrato equals co.IdConvenio
+                                  join co in context.Convenio on ev.IdConvenio equals co.IdConvenio
                                   join me in context.Usuario on or.IdMedico equals me.IdUsuario
                                   join tu in context.TablaDetalle.Where(x => x.CodTabla.Equals(Constantes.TabTipoUsuario)) on co.CodTipoUsuario equals tu.CodValor
                                   select new Orden()

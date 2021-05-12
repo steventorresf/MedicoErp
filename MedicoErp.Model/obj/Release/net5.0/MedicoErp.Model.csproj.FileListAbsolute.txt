@@ -1,0 +1,14 @@
+C:\Repositorios\MedicoErp_\MedicoErp.Model\bin\Release\net5.0\MedicoErp.Model.deps.json
+C:\Repositorios\MedicoErp_\MedicoErp.Model\bin\Release\net5.0\MedicoErp.Model.dll
+C:\Repositorios\MedicoErp_\MedicoErp.Model\bin\Release\net5.0\ref\MedicoErp.Model.dll
+C:\Repositorios\MedicoErp_\MedicoErp.Model\bin\Release\net5.0\MedicoErp.Model.pdb
+C:\Repositorios\MedicoErp_\MedicoErp.Model\bin\Release\net5.0\itextsharp.dll
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\net5.0\MedicoErp.Model.csprojAssemblyReference.cache
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\net5.0\MedicoErp.Model.GeneratedMSBuildEditorConfig.editorconfig
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\net5.0\MedicoErp.Model.AssemblyInfoInputs.cache
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\net5.0\MedicoErp.Model.AssemblyInfo.cs
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\net5.0\MedicoErp.Model.csproj.CoreCompileInputs.cache
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\net5.0\MedicoErp.Model.csproj.CopyComplete
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\net5.0\MedicoErp.Model.dll
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\net5.0\ref\MedicoErp.Model.dll
+C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Release\net5.0\MedicoErp.Model.pdb

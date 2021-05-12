@@ -17,7 +17,10 @@ namespace MedicoErp.Model.Entities.HistoriaClinica
         public long IdOrden { get; set; }
 
         [Required]
-        public long NoOrden { get; set; }
+        public int IdCentro { get; set; }
+
+        [Required]
+        public int NoOrden { get; set; }
 
         [Required]
         public long IdEvento { get; set; }
@@ -26,7 +29,7 @@ namespace MedicoErp.Model.Entities.HistoriaClinica
         public int IdMedico { get; set; }
 
         [Required]
-        public DateTime FechaOrden { get; set; }
+        public DateTimeOffset FechaOrden { get; set; }
 
         [StringLength(500)]
         public string Observaciones { get; set; }

@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewData["Title"] = "Folio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .fontsize-10 {
+        max-height: 150px;
+        font-size: 0.8em;
+    }
+
+    .bg-header {
+        background-color: transparent;
+    }
+
+    .cursorPointer {
+        cursor: pointer;
+    }
+
+    .tabla {
+        font-size: 0.85em;
+    }
+</style>
+
+<script>
+    var IdEvento = '@ViewBag.IdEvento';
+    var IdFolio = '@ViewBag.IdFolio';
+</script>
+
+
+<div class="row">
+    <div class="col-12 offset-md-1 col-md-10">
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-default" ng-click="vm.regresarEvento()">Regresar al Evento</button>
+            </div>
+            <div class="col-12 mt-3">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4>Datos Del Paciente</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="tabla nohover">
+                            <thead>
+                                <tr>
+                                    <th>No. Evento:</th>
+                                    <td colspan="3">{{vm.entity.noEvento}}</td>
+                                    <th>Fecha:</th>
+                                    <td>{{vm.entity.sFechaEvento}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Paciente:</th>
+                                    <td colspan="3">{{vm.entity.paciente.nombrePaciente}}</td>
+                                    <th>Doc. Identidad:</th>
+                                    <td>{{vm.entity.paciente.tipoIden + ' ' + vm.entity.paciente.numIden}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Fecha Nac.:</th>
+                                    <td>{{vm.entity.sFechaNacimiento}}</td>
+                                    <th>Sexo:</th>
+                                    <td>{{vm.entity.paciente.codSexo}}</td>
+                                    <th>Ocupaci&oacute;n:</th>
+                                    <td>{{vm.entity.paciente.ocupacion}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Direcci&oacute;n:</th>
+                                    <td colspan="3">{{vm.entity.paciente.direccion}}</td>
+                                    <th>Tel&eacute;fonos:</th>
+                                    <td>{{vm.entity.paciente.telefono}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Barrio:</th>
+                                    <td>{{vm.entity.paciente.barrio}}</td>
+                                    <th>Estado Civil:</th>
+                                    <td>{{vm.entity.estadoCivil}}</td>
+                                    <th>Correo:</th>
+                                    <td>{{vm.entity.paciente.correo}}</td>
+                                </tr>
+                                <tr>
+                                    <th>EPS:</th>
+                                    <td colspan="3">{{vm.entity.convenio.nombreEps}}</td>
+                                    <th>Tipo Usuario:</th>
+                                    <td>{{vm.entity.tipoUsuario}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Convenio:</th>
+                                    <td colspan="5">{{vm.entity.convenio.nombreConvenio}}</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12 text-center">
+                <h1>{{vm.entityFol.formato.nombreFormato}}</h1>
+            </div>
+        </div>
+        <div class="row mt-3" ng-repeat="a in vm.entityFol.listaAreas">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header" ng-if="a.visible">
+                        <h4>{{a.nombreArea}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3" ng-repeat="p in a.listaPreguntas">
+                            <div class="col-12">
+                                <label>{{p.nombrePregunta}}:</label>
+                                <input ng-if="p.tipoDato === 'NU'" type="number" class="form-control" ng-model="p.valor" />
+                                <input ng-if="p.tipoDato === 'TE'" type="text" class="form-control" ng-model="p.valor" />
+                                <textarea ng-if="p.tipoDato === 'TL'" rows="5" class="form-control" ng-model="p.valor" ng-blur="vm.onChangeRespuesta(p, $model, p)"></textarea>
+                                <textarea ng-if="p.tipoDato === 'TX'" rows="10" class="form-control" ng-model="p.valor" ng-blur="vm.onChangeRespuesta(p, $model, p)"></textarea>
+                                <input ng-if="p.tipoDato === 'FE'" type="date" class="form-control" ng-model="p.valor" />
+                                <ui-select ng-model="p.valor"
+                                           ng-if="p.tipoDato === 'CO'"
+                                           theme="bootstrap"
+                                           on-select="vm.onChangeRespuesta($item, $model, p)">
+                                    <ui-select-match placeholder="Seleccione...">{{ $select.selected.nombreRespuesta }}</ui-select-match>
+                                    <ui-select-choices repeat="item.codigo as item in p.listaTipoRespuesta | filter: $select.search">
+                                        <div ng-bind-html="item.nombreRespuesta | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row mb-3">
+            <div class="col-12">
+                <button class="btn btn-success" ng-click="vm.imprimirFolio()">Imprimir Folio</button>
+                <button class="btn btn-primary" ng-click="vm.guardarFolio()">Guardar Folio</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/master/controllers/historiaClinica/evento.controller.folio.js"></script>

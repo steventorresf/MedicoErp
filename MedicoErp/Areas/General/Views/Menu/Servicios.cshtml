@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewData["Title"] = "Servicios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pl-5 pr-5" ng-show="!vm.formVisible">
+    <div class="card">
+        <div class="card-header d-flex align-items-center">
+            <button class="btn btn-primary" ng-click="vm.nuevo()"><i class="fa fa-plus"></i> Nuevo</button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="fontsize-10" ui-grid="vm.gridOptions" ui-grid-resize-columns ui-grid-auto-resize></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="offset-2 col-8" ng-show="vm.formVisible">
+    <div class="card">
+        <div class="card-header d-flex align-items-center">
+            <h4 class="">Datos del Servicio</h4>
+        </div>
+        <div class="card-body">
+            <form id="formApp" name="formApp" novalidate="novalidate" class="form-horizontal">
+                <div class="form-group row">
+                    <div class="col-12 col-sm-4">
+                        <label>C&oacute;digo Ref.:<label class="red">*</label></label>
+                        <input ng-model="vm.entity.codigoRef" form="formApp" type="text" class="form-control" required>
+                    </div>
+                    <div class="col-12 col-sm-8">
+                        <label>Clase Servicio:<label class="red">*</label></label>
+                        <ui-select ng-model="vm.entity.idClaseServicio"
+                                   form="formApp"
+                                   theme="bootstrap"
+                                   tabindex="7"
+                                   required>
+                            <ui-select-match placeholder="Seleccione...">{{$select.selected.nombreClaseServicio}}</ui-select-match>
+                            <ui-select-choices repeat="item.idClaseServicio as item in vm.listClasesServicios | filter: $select.search">
+                                <div ng-bind-html="item.nombreClaseServicio | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-12">
+                        <label>Servicio:<label class="red">*</label></label>
+                        <input ng-model="vm.entity.nombreServicio" form="formApp" type="text" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-12">
+                        <label>Tipo Servicio:<label class="red">*</label></label>
+                        <ui-select ng-model="vm.entity.idTipoServicio"
+                                   form="formApp"
+                                   theme="bootstrap"
+                                   tabindex="7"
+                                   required>
+                            <ui-select-match placeholder="Seleccione...">{{$select.selected.nombreTipoServicio}}</ui-select-match>
+                            <ui-select-choices repeat="item.idTipoServicio as item in vm.listTiposServicios | filter: $select.search">
+                                <div ng-bind-html="item.nombreTipoServicio | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button ng-show="!vm.formModify" class="btn btn-primary" ng-click="vm.guardar()" ng-disabled="formApp.$invalid"><i class="fa fa-save"></i> Guardar</button>
+                        <button ng-show="vm.formModify" class="btn btn-primary" ng-click="vm.guardar()" ng-disabled="formApp.$invalid"><i class="fa fa-refresh"></i> Actualizar</button>
+                        <button class="btn btn-secondary" ng-click="vm.cancelar()"><i class="fa fa-close"></i> Cancelar</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/master/controllers/general/servicio.controller.js"></script>

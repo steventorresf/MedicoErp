@@ -2,6 +2,7 @@
 using MedicoErp.Model.Common;
 using MedicoErp.Model.Context;
 using MedicoErp.Model.Entities.General;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,6 +98,7 @@ namespace MedicoErp.Model.Business.General
                                            ModificadoPor = us.ModificadoPor,
                                            FechaModificado = us.FechaModificado,
                                            Clave = "-",
+                                           sFechaNacimiento = us.FechaNacimiento.ToString("MM/dd/yyyy"),
                                        }).OrderBy(x => x.NombreCompleto).OrderBy(x => x.CodEstado).ToList();
                 return Lista;
             }
@@ -234,6 +236,40 @@ namespace MedicoErp.Model.Business.General
             catch (Exception ex)
             {
                 errorBusiness.Create("ResetearClaveUsuario", ex, null);
+                throw;
+            }
+        }
+
+        public int UpdateContraseña(JObject data)
+        {
+            try
+            {
+                int Resp = 1;
+                int IdUsuario = data["idUsuario"].ToObject<int>();
+                string ClaveActual = data["claveActual"].ToObject<string>();
+                string ClaveNueva = data["claveNueva"].ToObject<string>();
+                string ClaveConfirmar = data["claveConfirmar"].ToObject<string>();
+                string ModificadoPor = data["modificadoPor"].ToObject<string>();
+
+                Usuario entity = context.Usuario.Find(IdUsuario);
+                if (entity.Clave.Equals(Util.EncriptarMD5(ClaveActual)))
+                {
+                    if (Util.EncriptarMD5(ClaveNueva).Equals(Util.EncriptarMD5(ClaveConfirmar)))
+                    {
+                        entity.Clave = Util.EncriptarMD5(ClaveNueva);
+                        entity.ModificadoPor = ModificadoPor;
+                        entity.FechaModificado = DateTimeOffset.Now;
+                        context.SaveChanges();
+                    }
+                    else { Resp = -2; }
+                }
+                else { Resp = -1; }
+
+                return Resp;
+            }
+            catch (Exception ex)
+            {
+                errorBusiness.Create("UpdateContraseña", ex, null);
                 throw;
             }
         }

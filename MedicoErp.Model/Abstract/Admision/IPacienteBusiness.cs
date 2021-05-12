@@ -11,6 +11,6 @@ namespace MedicoErp.Model.Abstract.Admision
     {
         void Create(Paciente entity);
         void Update(long IdPaciente, Paciente entity);
-        Paciente GetPacienteByIdent(string TipoIden, string NumIden);
+        Paciente GetPacienteByIdent(string TipoIden, string NumIden, int IdCentro);
     }
 }

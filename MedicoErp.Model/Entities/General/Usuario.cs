@@ -85,5 +85,8 @@ namespace MedicoErp.Model.Entities.General
 
         [NotMapped]
         public string EsMedicoDesc { get; set; }
+
+        [NotMapped]
+        public string sFechaNacimiento { get; set; }
     }
 }

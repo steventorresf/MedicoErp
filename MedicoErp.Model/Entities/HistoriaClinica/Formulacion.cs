@@ -17,7 +17,10 @@ namespace MedicoErp.Model.Entities.HistoriaClinica
         public long IdFormulacion { get; set; }
 
         [Required]
-        public long NoFormulacion { get; set; }
+        public int IdCentro { get; set; }
+
+        [Required]
+        public int NoFormulacion { get; set; }
 
         [Required]
         public long IdEvento { get; set; }
@@ -33,6 +36,8 @@ namespace MedicoErp.Model.Entities.HistoriaClinica
 
         [StringLength(50)]
         public string ProxControl { get; set; }
+
+        public string Observaciones { get; set; }
 
         [Required]
         [StringLength(2)]

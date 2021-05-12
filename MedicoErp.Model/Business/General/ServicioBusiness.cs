@@ -42,8 +42,8 @@ namespace MedicoErp.Model.Business.General
                 Servicio obSer = context.Servicio.Find(IdServicio);
                 obSer.CodigoRef = entity.CodigoRef;
                 obSer.NombreServicio = entity.NombreServicio;
-                obSer.IdEspecialidad = entity.IdEspecialidad;
                 obSer.IdClaseServicio = entity.IdClaseServicio;
+                obSer.IdTipoServicio = entity.IdTipoServicio;
                 context.SaveChanges();
             }
             catch (Exception ex)
@@ -74,16 +74,18 @@ namespace MedicoErp.Model.Business.General
             {
                 List<Servicio> Lista = (from se in context.Servicio.Where(x => x.IdCentro == IdCentro && x.Activo)
                                         join cs in context.ClaseServicio on se.IdClaseServicio equals cs.IdClaseServicio
+                                        join ts in context.TipoServicio on se.IdTipoServicio equals ts.IdTipoServicio
                                         select new Servicio()
                                         {
                                             IdServicio = se.IdServicio,
                                             NombreServicio = se.NombreServicio,
-                                            IdEspecialidad = se.IdEspecialidad,
                                             IdClaseServicio = se.IdClaseServicio,
+                                            IdTipoServicio = se.IdTipoServicio,
                                             CodigoRef = se.CodigoRef,
                                             Activo = se.Activo,
                                             IdCentro = se.IdCentro,                                            
                                             ClaseServicio = cs,
+                                            TipoServicio = ts,
                                         }).OrderBy(x => x.NombreServicio).ToList();
                 return Lista;
             }

@@ -67,11 +67,11 @@ namespace MedicoErp.Model.Business.Admision
             }
         }
 
-        public Paciente GetPacienteByIdent(string TipoIden, string NumIden)
+        public Paciente GetPacienteByIdent(string TipoIden, string NumIden, int IdCentro)
         {
             try
             {
-                Paciente entity = context.Paciente.FirstOrDefault(x => x.NumIden.Equals(NumIden) && x.TipoIden.Equals(TipoIden));
+                Paciente entity = context.Paciente.FirstOrDefault(x => x.NumIden.Equals(NumIden) && x.TipoIden.Equals(TipoIden) && x.IdCentro == IdCentro);
                 return entity;
             }
             catch (Exception ex)

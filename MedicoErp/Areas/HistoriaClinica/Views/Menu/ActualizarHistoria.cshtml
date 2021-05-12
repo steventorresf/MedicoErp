@@ -1,0 +1,119 @@
+﻿
+@{
+    ViewData["Title"] = "ActualizarHistoria";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" ng-show="vm.gridVisible">
+    <div class="col-12 offset-md-1 col-md-10">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <form id="formApp" name="formApp" novalidate="novalidate" class="form-horizontal">
+                                    <div class="form-group row">
+                                        <div class="col-12 col-md-5">
+                                            <label>Tipo Documento:</label>
+                                            <ui-select ng-model="vm.entity.tipoIden"
+                                                       form="formApp"
+                                                       theme="bootstrap"
+                                                       tabindex="7"
+                                                       required
+                                                       on-select="vm.getPacienteByIden()">
+                                                <ui-select-match placeholder="Seleccione...">{{ $select.selected.descripcion }}</ui-select-match>
+                                                <ui-select-choices repeat="item.codValor as item in vm.listTiposIden | filter: $select.search">
+                                                    <div ng-bind-html="item.descripcion | highlight: $select.search"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <label>N&uacute;mero Documento:</label>
+                                            <input ng-model="vm.entity.numIden" type="text" class="form-control" ng-blur="vm.getPacienteByIden()" required />
+                                        </div>
+                                        <div class="col-12 col-md-3">
+                                            <br />
+                                            <button class="btn btn-primary" ng-click="vm.buscarEventos()">Consultar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <h4>{{vm.entityPac.nombrePaciente}}</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Eventos</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="fontsize-10" ui-grid="vm.gridOptionsEve" ui-grid-selection ui-grid-edit ui-grid-resize-columns ui-grid-auto-resize></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary" ng-click="vm.nuevoEvento()">Nuevo Evento</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="vm.formVisible">
+    <div class="col-12 offset-md-2 col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>{{vm.entityPac.nombrePaciente}}</h4>
+            </div>
+            <div class="card-body">
+                <form id="formApp" name="formApp" novalidate="novalidate" class="form-horizontal">
+                    <div class="form-group row">
+                        <div class="col-12 col-md-4">
+                            <label>Tipo Identificaci&oacute;n:</label>
+                            <input type="text" class="form-control" form="formApp" ng-model="vm.entityPac.tipoIden" onkeydown="return false" />
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label>N&uacute;mero Identificaci&oacute;n:</label>
+                            <input type="text" class="form-control" form="formApp" ng-model="vm.entityPac.numIden" onkeydown="return false" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Paciente:</label>
+                            <input type="text" class="form-control" form="formApp" ng-model="vm.entityPac.nombrePaciente" onkeydown="return false" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Convenio:</label>
+                            <ui-select ng-model="vm.entity.idConvenio"
+                                       form="formApp"
+                                       theme="bootstrap"
+                                       required>
+                                <ui-select-match placeholder="Seleccione un convenio...">{{ $select.selected.nombreConvenio }}</ui-select-match>
+                                <ui-select-choices repeat="item.idConvenio as item in vm.listConvenios | filter: $select.search">
+                                    <div ng-bind-html="item.nombreConvenio | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" ng-click="vm.generarEvento()" ng-disabled="formApp.$invalid">Generar Evento</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/master/controllers/historiaClinica/actualizarHistoria.controller.js"></script>

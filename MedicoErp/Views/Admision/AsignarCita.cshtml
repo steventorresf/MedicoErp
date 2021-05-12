@@ -1,0 +1,217 @@
+﻿
+@{
+    ViewData["Title"] = "Admisi&oacute;n - Asignar Cita";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="ColCita" class="row ml-5 mr-5">
+    <div class="col-12 col-sm-8">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <div class="col-12 col-lg-6 p-0">
+                    <h4>Datos de la cita</h4>
+                </div>
+                <div class="col-12 col-lg-6 text-right">
+                    <i id="btnNuevoPac" class="btn-link text-right">Nuevo Paciente</i>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="form-horizontal">
+                    <div class="form-group row">
+                        <div class="col-12 col-md-7">
+                            <label>Tipo Identificaci&oacute;n:<label class="red">*</label></label>
+                            <select id="CboTipoIden" class="form-control selectpicker" data-live-search="true" onchange="GetPacienteByIden()"></select>
+                        </div>
+                        <div class="col-12 col-sm-5">
+                            <label>N&uacute;mero Identificaci&oacute;n:<label class="red">*</label></label>
+                            <input id="TxtNumIden" type="text" class="form-control" onblur="GetPacienteByIden()" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Nombre Paciente:<label class="red">*</label></label>
+                            <input id="TxtNombrePaciente" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Convenio:<label class="red">*</label></label>
+                            <select id="CboConvenio" class="form-control selectpicker" data-live-search="true" onchange="GetServicios()"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Servicio:<label class="red">*</label></label>
+                            <select id="CboServicio" class="form-control selectpicker" data-live-search="true" onchange="fnOnChangeSer()"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>M&eacute;dico:<label class="red">*</label></label>
+                            <select id="CboMedico" class="form-control selectpicker" data-live-search="true" onchange="fnOnChangeMed()"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <label>Fecha de la Cita:<label class="red">*</label></label>
+                        <input id="TxtFechaCita" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <div class="gridEnca">
+                                <table class="tabla">
+                                    <thead>
+                                        <tr>
+                                            <th>Hora</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="gridDeta">
+                                <table class="tabla">
+                                    <tbody id="BodyHoras"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ColCitaOk" class="row ml-5 mr-5" hidden="hidden">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h4>¡La cita ha sido asignada exitosamente!</h4>
+            </div>
+            <div class="card-body">
+                <table>
+                    <tr>
+                        <td width="18%"><b>Doc. Identidad:</b></td>
+                        <td width="25%" id="TextoIden"></td>
+                        <td width="23%"><b>Paciente:</b></td>
+                        <td id="TextoPac"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Convenio:</b></td>
+                        <td id="TextoCon"></td>
+                        <td><b>Servicio:</b></td>
+                        <td id="TextoSer"></td>
+                    </tr>
+                    <tr>
+                        <td><b>M&eacute;dico:</b></td>
+                        <td id="TextoMed"></td>
+                        <td><b>Fecha Hora Cita:</b></td>
+                        <td id="TextoFec"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ColPac" class="row ml-5 mr-5" hidden="hidden">
+    <div class="col-12">
+        <div class="card">
+            <div id="PacHeader" class="card-header d-flex align-items-center">
+                <h4 id="TextoPacGrid">Nuevo Paciente</h4>
+            </div>
+            <div class="card-body">
+                <div class="form-horizontal">
+                    <div class="form-group row">
+                        <div class="col-12 col-md-3">
+                            <label>Tipo Identificaci&oacute;n:<label class="red">*</label></label>
+                            <select id="CboTipoIdenE" class="form-control selectpicker" data-live-search="true"></select>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                            <label>N&uacute;mero Identificaci&oacute;n:<label class="red">*</label></label>
+                            <input id="TxtNumIdenE" type="text" class="form-control" />
+                        </div>
+                        <div class="col-12 col-sm-3">
+                            <label>Primer Nombre:<label class="red">*</label></label>
+                            <input id="TxtPrimerNombreE" type="text" class="form-control" />
+                        </div>
+                        <div class="col-12 col-sm-3">
+                            <label>Segundo Nombre:<label class="red">*</label></label>
+                            <input id="TxtSegundoNombreE" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-sm-3">
+                            <label>Primer Apellido:<label class="red">*</label></label>
+                            <input id="TxtPrimerApellidoE" type="text" class="form-control" />
+                        </div>
+                        <div class="col-12 col-sm-3">
+                            <label>Segundo Apellido:<label class="red">*</label></label>
+                            <input id="TxtSegundoApellidoE" type="text" class="form-control" />
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label>Sexo:<label class="red">*</label></label>
+                            <select id="CboSexoE" class="form-control selectpicker" data-live-search="true">
+                                <option value="0">*Seleccione...*</option>
+                                <option value="M">MASCULINO</option>
+                                <option value="F">FEMENINO</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                            <label>Fecha Nacimiento:<label class="red">*</label></label>
+                            <input id="TxtFechaNacimientoE" type="text" class="form-control date-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-md-3">
+                            <label>Departamento:<label class="red">*</label></label>
+                            <select id="CboDptoE" class="form-control selectpicker" data-live-search="true" onchange="GetMunicipios()"></select>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label>Municipio:<label class="red">*</label></label>
+                            <select id="CboMunicipioE" class="form-control selectpicker" data-live-search="true"></select>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label>Direcci&oacute;n:<label class="red">*</label></label>
+                            <input id="TxtDireccion" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-sm-3">
+                            <label>Zona:<label class="red">*</label></label>
+                            <select id="CboZona" class="form-control selectpicker" data-live-search="true">
+                                <option value="U">URBANA</option>
+                                <option value="R">RURAL</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                            <label>Tel&eacute;fono:<label class="red">*</label></label>
+                            <input id="TxtTelefono" type="text" class="form-control" />
+                        </div>
+                        <div class="col-12 col-sm-3">
+                            <label>Correo:<label class="red">*</label></label>
+                            <input id="TxtCorreo" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <button id="btnGuardarPac1" class="btn btn-primary">Guardar</button>
+                            <button id="btnGuardarPac2" class="btn btn-primary">Guardar y Terminar</button>
+                            <button id="btnCancelarPac" class="btn btn-default">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/master/js/Admision/AsignarCita.js"></script>

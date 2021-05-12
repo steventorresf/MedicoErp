@@ -34,6 +34,8 @@ namespace MedicoErp.Model.Business.HistoriaClinica
             try
             {
                 List<Multimedia> Lista = (from mu in context.Multimedia.Where(x => x.IdPaciente == IdPaciente)
+                                          join ev in context.Evento on mu.IdEvento equals ev.IdEvento into LeftJoinEvento
+                                          from LFEv in LeftJoinEvento.DefaultIfEmpty()
                                           select new Multimedia()
                                           {
                                               IdMultimedia = mu.IdMultimedia,
@@ -41,15 +43,39 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                                               IdPaciente = mu.IdPaciente,
                                               NombreArchivo = mu.NombreArchivo,
                                               NombreRuta = mu.NombreRuta,
+                                              Extension = mu.Extension,
                                               FechaCreado = mu.FechaCreado,
                                               CreadoPor = mu.CreadoPor,
-                                              sFechaCreacion = mu.FechaCreado.ToString("dd/MM/yyyy hh:mm tt", new CultureInfo("en-US"))
+                                              sFechaCreacion = mu.FechaCreado.ToString("dd/MM/yyyy hh:mm tt", new CultureInfo("en-US")),
+                                              NoEvento = LFEv != null ? LFEv.NoEvento.ToString() : "",
                                           }).OrderByDescending(x => x.FechaCreado).ToList();
                 return Lista;
             }
             catch (Exception ex)
             {
                 errorBusiness.Create("GetAllByIdPaciente", ex, null);
+                throw;
+            }
+        }
+
+        public Multimedia GetBase64ArchivoByIdMultimedia(int IdMultimedia)
+        {
+            try
+            {
+                Multimedia entity = context.Multimedia.Find(IdMultimedia);
+
+                FileStream file = File.OpenRead(Parametros.RutaMultimedia + entity.IdCentro + "//" + entity.NombreRuta);
+                byte[] vs = new byte[file.Length];
+                file.Read(vs, 0, vs.Length);
+                file.Close();
+
+                entity.DataApp = Util.GetDataArchivo(entity.Extension) + Convert.ToBase64String(vs);
+
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                errorBusiness.Create("GetBase64Pdf", ex, null);
                 throw;
             }
         }
@@ -122,14 +148,17 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                 int IdUsuario = data["idUsuario"].ToObject<int>();
                 string Obs = data["obs"].ToObject<string>();
                 string NombreUsuario = data["nombreUsuario"].ToObject<string>();
+                long? IdEvento = data["idEvento"].ToObject<long>();
 
                 using (var tran = context.Database.BeginTransaction())
                 {
                     Multimedia entityMul = new Multimedia();
                     entityMul.IdCentro = IdCentro;
                     entityMul.IdPaciente = entityPac.IdPaciente;
+                    entityMul.IdEvento = IdEvento > 0 ? IdEvento : null;
                     entityMul.NombreArchivo = NombreArch;
                     entityMul.NombreRuta = NombreRuta;
+                    entityMul.Extension = "pdf";
                     entityMul.Observaciones = Obs;
                     entityMul.FechaCreado = DateTimeOffset.Now;
                     entityMul.CreadoPor = NombreUsuario;
@@ -154,6 +183,47 @@ namespace MedicoErp.Model.Business.HistoriaClinica
             catch (Exception ex)
             {
                 errorBusiness.Create("MultimediaPdfReal", ex, null);
+                throw;
+            }
+        }
+
+        public void MultimediaSubirArch(Multimedia entity)
+        {
+            try
+            {
+                using (var tran = context.Database.BeginTransaction())
+                {
+                    if (entity.IdEvento <= 0)
+                    {
+                        entity.IdEvento = null;
+                    }
+                    entity.Extension = entity.NombreOriginal.Substring(entity.NombreOriginal.LastIndexOf(".") + 1);
+                    entity.NombreArchivo += "." + entity.Extension;
+                    entity.NombreRuta = DateTimeOffset.Now.ToString("yyyyMMdd_HHmmss") + "_" + entity.NombreArchivo;
+                    entity.FechaCreado = DateTimeOffset.Now;
+                    context.Multimedia.Add(entity);
+                    context.SaveChanges();
+
+                    string Directorio = Parametros.RutaMultimedia + entity.IdCentro;
+                    if (!Directory.Exists(Directorio))
+                    {
+                        Directory.CreateDirectory(Directorio);
+                    }
+
+                    string FilePath = Directorio + "/" + entity.NombreRuta;
+                    byte[] bytes = Convert.FromBase64String(entity.Archivo);
+                    using (var imageFile = new FileStream(FilePath, FileMode.Create))
+                    {
+                        imageFile.Write(bytes, 0, bytes.Length);
+                        imageFile.Flush();
+                    }
+
+                    tran.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                errorBusiness.Create("MultimediaSubirArch", ex, null);
                 throw;
             }
         }

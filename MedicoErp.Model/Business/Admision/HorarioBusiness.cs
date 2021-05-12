@@ -54,10 +54,10 @@ namespace MedicoErp.Model.Business.Admision
                                             IdMedico = ho.IdMedico,
                                             CodEstado = ho.CodEstado,
                                             IdCentro = ho.IdCentro,
-                                            SHoraInicial = ho.HoraInicial.ToString("hh:mm tt", new CultureInfo("en-EU")),
-                                            SHoraFinal = ho.HoraFinal.ToString("hh:mm tt", new CultureInfo("en-EU")),
+                                            SHoraInicial = ho.HoraInicial.ToString("hh:mm tt", new CultureInfo("en-US")),
+                                            SHoraFinal = ho.HoraFinal.ToString("hh:mm tt", new CultureInfo("en-US")),
                                             NombreEstado = es.Descripcion,
-                                        }).OrderBy(x => x.HoraInicial).OrderBy(x => x.Fecha).ToList();
+                                        }).OrderBy(x => x.HoraInicial).OrderByDescending(x => x.Fecha).ToList();
                 return Lista;
             }
             catch (Exception ex)
@@ -181,8 +181,8 @@ namespace MedicoErp.Model.Business.Admision
                                            Fecha = ho.Fecha,
                                            HoraInicial = ho.HoraInicial,
                                            HoraFinal = ho.HoraFinal,
-                                           SHoraInicial = ho.HoraInicial.ToString("hh:mm tt", new CultureInfo("en-EU")) + " - " + ho.HoraFinal.ToString("hh:mm tt", new CultureInfo("en-EU")),
-                                           SHoraFinal = ho.HoraFinal.ToString("hh:mm tt", new CultureInfo("en-EU")),
+                                           SHoraInicial = ho.HoraInicial.ToString("hh:mm tt", new CultureInfo("en-US")) + " - " + ho.HoraFinal.ToString("hh:mm tt", new CultureInfo("en-US")),
+                                           SHoraFinal = ho.HoraFinal.ToString("hh:mm tt", new CultureInfo("en-US")),
                                            CodEstado = ho.CodEstado,
                                            IdMedico = ho.IdMedico,
                                            IdCentro = ho.IdCentro,

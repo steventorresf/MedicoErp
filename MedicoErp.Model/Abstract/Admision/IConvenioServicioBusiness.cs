@@ -13,6 +13,7 @@ namespace MedicoErp.Model.Abstract.Admision
         void Creates(List<ConvenioServicio> Lista);
         void UpdateTarifa(int IdDetalle, decimal VTarifa);
         void Delete(int IdDetalle);
+        ConvenioServicio GetByIdServicio(int IdConvenio, int IdServicio);
         List<ConvenioServicio> GetServiciosContratado(int IdConvenio);
         List<Servicio> GetServiciosNoContratado(int IdCentro, int IdConvenio);
     }

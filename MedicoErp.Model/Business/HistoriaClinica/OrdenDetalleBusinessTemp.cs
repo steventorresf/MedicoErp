@@ -36,6 +36,23 @@ namespace MedicoErp.Model.Business.HistoriaClinica
             }
         }
 
+        public void Update(int IdDetalle, OrdenDetalleTemp entity)
+        {
+            try
+            {
+                OrdenDetalleTemp ob = context.OrdenDetalleTemp.Find(IdDetalle);
+                ob.Cantidad = entity.Cantidad;
+                ob.Tarifa = entity.Tarifa;
+                ob.Descuento = entity.Descuento;
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                errorBusiness.Create("OrdenDetalleTempCreate", ex, null);
+                throw;
+            }
+        }
+
         public void Delete(int IdDetalle)
         {
             try
@@ -63,6 +80,8 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                                                     IdUsuario = orddet.IdUsuario,
                                                     IdServicio = orddet.IdServicio,
                                                     Cantidad = orddet.Cantidad,
+                                                    Tarifa = orddet.Tarifa,
+                                                    Descuento = orddet.Descuento,
                                                     NombreServicio = ser.NombreServicio
                                                 }).ToList();
                 return Lista;

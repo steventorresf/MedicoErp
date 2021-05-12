@@ -23,10 +23,10 @@ namespace MedicoErp.Model.Entities.General
         public string NombreServicio { get; set; }
 
         [Required]
-        public int IdEspecialidad { get; set; }
+        public int IdClaseServicio { get; set; }
 
         [Required]
-        public int IdClaseServicio { get; set; }
+        public int IdTipoServicio { get; set; }
 
         [Required]
         public bool Activo { get; set; }
@@ -37,5 +37,8 @@ namespace MedicoErp.Model.Entities.General
 
         [NotMapped]
         public ClaseServicio ClaseServicio { get; set; }
+
+        [NotMapped]
+        public TipoServicio TipoServicio { get; set; }
     }
 }

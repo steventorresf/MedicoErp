@@ -1,0 +1,119 @@
+﻿.red {
+    color: #dc3545;
+}
+
+.blue {
+    color: #007bff;
+}
+
+.green {
+    color: #28a745;
+}
+
+.tabla tbody i{
+    font-size: 1.4em;
+    margin-right:5px;
+    cursor:pointer;
+}
+
+
+.bg-header {
+    /*background-color: #e2c5f3;*/
+    /*background-color: #b5e0f3;*/
+    text-align: center;
+}
+
+
+.tabla thead th {
+    font-weight: bold;
+    color: black;
+    height: 33px;
+    border: 1px solid lightgray;
+    padding:5px;
+}
+
+.tabla {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+
+
+    .tabla tr td {
+        height: 30px;
+        white-space: nowrap;
+        border: 1px solid lightgray;
+        padding: 5px;
+    }
+
+.ui-state-active {
+    background-color: #6f42c1 !important;
+    color: white !important;
+    border-color: #6f42c1 !important;
+}
+
+.form-group label.required{
+    font-weight:bold;
+
+}
+
+#menu-opciones i{
+
+}
+
+#aLogout{
+    cursor:pointer;
+}
+
+i.btn-link {
+    cursor: pointer;
+}
+
+
+
+
+#TextoTitulo span {
+    font-size: 1.5em;
+    text-transform: capitalize;
+}
+
+.fontsize-10 {
+    font-size: 0.8em;
+}
+
+    .fontsize-10 .fa {
+        font-size: 1.5em;
+    }
+
+.ui-select-choices.ui-select-choices-content.ui-select-dropdown.dropdown-menu {
+    display: block;
+}
+
+.ui-select-bootstrap .ui-select-choices-row.active > span {
+    color: #fff;
+    text-decoration: none;
+    outline: 0;
+    background-color: #2b90d9;/*#796AEE;*/
+}
+
+.ui-select-bootstrap .form-control {
+    background-color: transparent !important;
+}
+
+.ui-select-multiple.ui-select-bootstrap .ui-select-match-item {
+    display: block;
+}
+
+.p-5 {
+    padding-top: 0 !important;
+}
+
+.form-control {
+    height: calc(2rem + 1px);
+    padding: 5px 7.5px;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    border-radius: 0;
+    font-size: 0.9em;
+}

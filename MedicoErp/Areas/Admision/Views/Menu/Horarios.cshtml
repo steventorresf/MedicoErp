@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewData["Title"] = "Horarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/vendor/datepicker/moment.js"></script>
+<link rel="stylesheet" href="~/vendor/datepicker/jquery-ui.css" />
+<script src="~/vendor/datepicker/jquery-ui.js"></script>
+<link rel="stylesheet" href="~/vendor/datepicker/jquery-ui.multidatespicker.css" />
+<script src="~/vendor/datepicker/jquery-ui.multidatespicker.js"></script>
+
+<div class="row" ng-show="!vm.formVisible">
+    <div class="col-12 offset-md-2 col-md-8">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h4>Seleccione un m&eacute;dico</h4>
+            </div>
+            <div class="card-body">
+                <form id="formApp1" name="formApp1" class="form-horizontal">
+                    <div class="form-group row">
+                        <div class="col-12 col-md-8">
+                            <ui-select ng-model="vm.idMedico"
+                                       form="formApp"
+                                       theme="bootstrap"
+                                       tabindex="7"
+                                       required
+                                       on-select="vm.getHorarios()">
+                                <ui-select-match placeholder="Seleccione un médico...">{{$select.selected.nombreCompleto}}</ui-select-match>
+                                <ui-select-choices repeat="item.idUsuario as item in vm.listMedicos | filter: $select.search">
+                                    <div ng-bind-html="item.nombreCompleto | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button ng-click="vm.nuevo()" class="btn btn-primary" ng-disabled="formApp1.$invalid">Nuevo</button>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <div class="fontsize-10" ui-grid="vm.gridOptions" ui-grid-resize-columns ui-grid-auto-resize></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="vm.formVisible">
+    <div class="col-12 offset-sm-2 col-sm-8">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h4>Nuevo Horario</h4>
+            </div>
+            <div class="card-body">
+                <form id="formApp2" name="formApp2" novalidate="novalidate" class="form-horizontal">
+                    <div class="form-group row">
+                        <div class="col-12 col-sm-6">
+                            <label>Hora Inicial:<label class="red">*</label></label>
+                            <input ng-model="vm.entity.horaInicial" type="text" form="formApp2" class="form-control" required />
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label>Hora Final:<label class="red">*</label></label>
+                            <input ng-model="vm.entity.horaFinal" type="text" form="formApp2" class="form-control" disabled="disabled" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-sm-6">
+                            <label>N&uacute;mero de Pacientes:<label class="red">*</label></label>
+                            <input ng-model="vm.entity.numPac" type="number" form="formApp2" class="form-control" min="1" ng-blur="vm.validarHoraFinal()" />
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label>Minutos Por Paciente:<label class="red">*</label></label>
+                            <input ng-model="vm.entity.minPac" type="number" form="formApp2" class="form-control" min="15" ng-blur="vm.validarHoraFinal()" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Fechas:<label class="red">*</label></label>
+                            <input id="txtFechas" ng-model="vm.txtFechas" type="text" form="formApp2" class="form-control" readonly="readonly" placeholder="Seleccione fecha(s)...">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <button ng-click="vm.guardar()" class="btn btn-primary" ng-disabled="formApp2.$invalid">Crear Horario(s)</button>
+                            <button ng-click="vm.cancelar()" class="btn btn-default">Cancelar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/master/controllers/admision/horario.controller.js"></script>

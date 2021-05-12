@@ -67,20 +67,34 @@ namespace MedicoErp.Model.Business.Admision
             }
         }
 
+        public ConvenioServicio GetByIdServicio(int IdConvenio, int IdServicio)
+        {
+            try
+            {
+                ConvenioServicio entity = context.ConvenioServicio.FirstOrDefault(x => x.IdServicio == IdServicio && x.IdConvenio == IdConvenio);
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                errorBusiness.Create("GetByIdServicio", ex, null);
+                throw;
+            }
+        }
+
         public List<ConvenioServicio> GetServiciosContratado(int IdConvenio)
         {
             try
             {
                 List<ConvenioServicio> Lista = (from sc in context.ConvenioServicio.Where(x => x.IdConvenio == IdConvenio)
-                                                  join s in context.Servicio on sc.IdServicio equals s.IdServicio
-                                                  select new ConvenioServicio()
-                                                  {
-                                                      IdDetalle = sc.IdDetalle,
-                                                      Servicio = s,
-                                                      IdConvenio = sc.IdConvenio,
-                                                      IdServicio = sc.IdServicio,
-                                                      Tarifa = sc.Tarifa,
-                                                  }).OrderBy(x => x.Servicio.NombreServicio).ToList();
+                                                join s in context.Servicio on sc.IdServicio equals s.IdServicio
+                                                select new ConvenioServicio()
+                                                {
+                                                    IdDetalle = sc.IdDetalle,
+                                                    Servicio = s,
+                                                    IdConvenio = sc.IdConvenio,
+                                                    IdServicio = sc.IdServicio,
+                                                    Tarifa = sc.Tarifa,
+                                                }).OrderBy(x => x.Servicio.NombreServicio).ToList();
                 return Lista;
             }
             catch (Exception ex)

@@ -25,6 +25,12 @@ namespace MedicoErp.Model.Entities.HistoriaClinica
         [Required]
         public int Cantidad { get; set; }
 
+        [Required]
+        public decimal Tarifa { get; set; }
+
+        [Required]
+        public decimal Descuento { get; set; }
+
         [NotMapped]
         public Servicio Servicio { get; set; }
     }

@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewData["Title"] = "Convenios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" ng-show="!vm.modoTar && !vm.formVisible">
+    <div class="col-12 offset-md-1 col-md-10">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <button class="btn btn-primary" ng-click="vm.nuevo()"><i class="fa fa-plus"></i> Nuevo</button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div class="fontsize-10" ui-grid="vm.gridOptions" ui-grid-resize-columns ui-grid-auto-resize></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" ng-show="!vm.modoTar && vm.formVisible">
+    <div class="col-12 offset-md-2 col-md-8">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h4 class="">Datos del Convenio</h4>
+            </div>
+            <div class="card-body">
+                <form id="formApp" name="formApp" novalidate="novalidate" class="form-horizontal">
+                    <div class="form-group row">
+                        <div class="col-12 col-md-8">
+                            <label class="form-control-label required">Convenio:<label class="red">*</label></label>
+                            <input ng-model="vm.entity.nombreConvenio" type="text" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-md-8">
+                            <label class="form-control-label required">EPS:<label class="red">*</label></label>
+                            <input ng-model="vm.entity.nombreEps" type="text" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-md-4">
+                            <label class="form-control-label required">Tipo Usuario:<label class="red">*</label></label>
+                            <ui-select ng-model="vm.entity.codTipoUsuario"
+                                       form="formApp"
+                                       theme="bootstrap"
+                                       tabindex="7"
+                                       required>
+                                <ui-select-match placeholder="Seleccione...">{{$select.selected.descripcion}}</ui-select-match>
+                                <ui-select-choices repeat="item.codValor as item in vm.listTiposUsuario | filter: $select.search">
+                                    <div ng-bind-html="item.descripcion | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-control-label required">Tipo Fact.:<label class="red">*</label></label>
+                            <ui-select ng-model="vm.entity.codTipoFact"
+                                       form="formApp"
+                                       theme="bootstrap"
+                                       tabindex="7"
+                                       required>
+                                <ui-select-match placeholder="Seleccione...">{{$select.selected.descripcion}}</ui-select-match>
+                                <ui-select-choices repeat="item.codValor as item in vm.listTiposFact | filter: $select.search">
+                                    <div ng-bind-html="item.descripcion | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <button ng-click="vm.guardar()" class="btn btn-primary" ng-show="!vm.formModify" ng-disabled="formApp.$invalid"><i class="fa fa-save"></i> Guardar</button>
+                            <button ng-click="vm.guardar()" class="btn btn-primary" ng-show="vm.formModify" ng-disabled="formApp.$invalid"><i class="fa fa-refresh"></i> Actualizar</button>
+                            <button ng-click="vm.cancelar()" class="btn btn-secondary"><i class="fa fa-close"></i> Cancelar</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" ng-show="vm.modoTar &&  !vm.formVisibleTar">
+    <div class="col-12 offset-md-1 col-md-10">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h4>{{vm.entity.nombreConvenio}}</h4>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <div class="table-responsive">
+                        <div class="fontsize-10" ui-grid="vm.gridOptionsTar" ui-grid-edit ui-grid-resize-columns ui-grid-auto-resize></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button ng-click="vm.regresarTar()" class="btn btn-default"><i class="fa fa-arrow-left"></i> Regresar</button>
+                    <button ng-click="vm.nuevoTar()" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" ng-show="vm.modoTar && vm.formVisibleTar">
+    <div class="col-12 offset-md-1 col-md-8">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h4>{{vm.entity.nombreConvenio}}</h4>
+            </div>
+            <div class="card-body">
+                <form id="formAppSerCon" name="formAppSerCon">
+                    <div class="form-group">
+                        <label>Seleccione Servicio(s):</label>
+                        <div class="fontsize-10" style="height:250px" ui-grid="vm.gridOptionsSerCon" ui-grid-selection ui-grid-resize-columns ui-grid-auto-resize></div>
+                    </div>
+                    <div class="form-group">
+                        <button ng-click="vm.guardarTar()" type="button" class="btn btn-primary" ng-disabled="vm.gridApiSerCon.selection.getSelectedRows().length === 0">Aceptar y Agregar</button>
+                        <button ng-click="vm.cancelarTar()" class="btn btn-default"><i class="fa fa-close"></i> Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/master/controllers/admision/convenio.controller.js"></script>

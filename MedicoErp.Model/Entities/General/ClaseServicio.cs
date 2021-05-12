@@ -17,12 +17,5 @@ namespace MedicoErp.Model.Entities.General
         [Required]
         [StringLength(50)]
         public string NombreClaseServicio { get; set; }
-
-        [Required]
-        [StringLength(2)]
-        public string TipoRips { get; set; }
-
-        [Required]
-        public bool Visible { get; set; }
     }
 }

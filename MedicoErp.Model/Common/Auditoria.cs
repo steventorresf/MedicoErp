@@ -16,10 +16,8 @@ namespace MedicoErp.Model.Common
         [StringLength(50)]
         public string CreadoPor { get; set; }
 
-        [Required]
-        public DateTimeOffset FechaModificado { get; set; }
+        public DateTimeOffset? FechaModificado { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string ModificadoPor { get; set; }
     }

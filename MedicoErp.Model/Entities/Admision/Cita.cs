@@ -15,7 +15,9 @@ namespace MedicoErp.Model.Entities.Admision
         public long IdCita { get; set; }
 
         [Required]
-        public int IdFacturacion { get; set; }
+        public int NoCita { get; set; }
+
+        public int? IdFacturacion { get; set; }
 
         [Required]
         public DateTime Fecha { get; set; }
@@ -24,8 +26,7 @@ namespace MedicoErp.Model.Entities.Admision
         [StringLength(20)]
         public string Hora { get; set; }
 
-        [Required]
-        public long IdReserva { get; set; }
+        public long? IdReserva { get; set; }
 
         [Required]
         public long IdPaciente { get; set; }
@@ -38,6 +39,9 @@ namespace MedicoErp.Model.Entities.Admision
 
         [Required]
         public int IdCentro { get; set; }
+
+        [Required]
+        public int IdCentroRemision { get; set; }
 
         [Required]
         public int IdMedico { get; set; }
@@ -54,6 +58,9 @@ namespace MedicoErp.Model.Entities.Admision
         [Required]
         public decimal Tarifa { get; set; }
 
+        [Required]
+        public decimal Descuento { get; set; }
+
         public long? IdEvento { get; set; }
 
         [Required]
@@ -63,9 +70,26 @@ namespace MedicoErp.Model.Entities.Admision
 
 
         // NotMapped
+        [NotMapped]
+        public string TipoDocumento { get; set; }
+
+        [NotMapped]
+        public string NumDocumento { get; set; }
+
+        [NotMapped]
+        public string NombreCentro { get; set; }
+
+        [NotMapped]
+        public string DireccionCentro { get; set; }
+
+        [NotMapped]
+        public string CodigoRef { get; set; }
 
         [NotMapped]
         public string NombreMedico { get; set; }
+
+        [NotMapped]
+        public string NombreClaseServicio { get; set; }
 
         [NotMapped]
         public string NombreServicio { get; set; }
@@ -80,6 +104,9 @@ namespace MedicoErp.Model.Entities.Admision
         public string NombreEstado { get; set; }
 
         [NotMapped]
+        public string TipoIdentificacion { get; set; }
+
+        [NotMapped]
         public string Identificacion { get; set; }
 
         [NotMapped]
@@ -87,5 +114,11 @@ namespace MedicoErp.Model.Entities.Admision
 
         [NotMapped]
         public string SFecha { get; set; }
+
+        [NotMapped]
+        public long IdServicioOrdenado { get; set; }
+
+        [NotMapped]
+        public decimal VrTotal { get; set; }
     }
 }

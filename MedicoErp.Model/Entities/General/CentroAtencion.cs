@@ -55,25 +55,20 @@ namespace MedicoErp.Model.Entities.General
         [StringLength(2)]
         public string CodEstado { get; set; }
 
-        [StringLength(10)]
-        public string PrefijoVol { get; set; }
-
         [Required]
-        public int NoVolante { get; set; }
+        public bool Externo { get; set; }
 
-        [Required]
-        public int NoCita { get; set; }
+        public int? IdPadre { get; set; }
 
-        [Required]
-        public int NoEvento { get; set; }
 
-        [Required]
-        public int NoFolio { get; set; }
+        [NotMapped]
+        public string NomDepartamento { get; set; }
 
-        [Required]
-        public int NoFormulacion { get; set; }
+        [NotMapped]
+        public string NomMunicipio { get; set; }
 
-        [Required]
-        public int NoOrden { get; set; }
+        [NotMapped]
+        public string NombreEstado { get; set; }
+
     }
 }
