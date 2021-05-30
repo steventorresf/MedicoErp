@@ -13,6 +13,7 @@ namespace MedicoErp.Model.Common
         public const string Area_Admision = "Admision";
         public const string Area_General = "General";
         public const string Area_HistoriaClinica = "HistoriaClinica";
+        public const string Area_Informes = "HistoriaClinica";
 
         // Estados
         public const string EstadoActivo = "AC";

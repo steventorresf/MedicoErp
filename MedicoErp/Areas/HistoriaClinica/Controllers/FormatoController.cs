@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace MedicoErp.Areas.HistoriaClinica.Controllers
 {
-    [Route("[area]/api/[controller]")]
+    [Route("HistoriaClinica/api/[controller]")]
     [ApiController]
-    [Area(Constantes.Area_HistoriaClinica)]
     public class FormatoController : ControllerBase
     {
         private readonly IFormatoBusiness formatoBusiness;

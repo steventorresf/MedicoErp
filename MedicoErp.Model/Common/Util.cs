@@ -13,8 +13,8 @@ namespace MedicoErp.Model.Common
 {
     public class Util
     {
-        private static string MAC_Servidor = "D02788D04106";
-        //private static string MAC_Servidor = "E4E749C23E43";
+        //private static string MAC_Servidor = "D02788D04106";
+        private static string MAC_Servidor = "E4E749C23E43";
 
         public static string EncriptarMD5(string Conversion)
         {

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Repositorios\\MedicoErp_\\MedicoErp.Model\\MedicoErp.Model.csproj": {}
+    "C:\\Repositorios\\MedicoErp\\MedicoErp.Model\\MedicoErp.Model.csproj": {}
   },
   "projects": {
-    "C:\\Repositorios\\MedicoErp_\\MedicoErp.Model\\MedicoErp.Model.csproj": {
+    "C:\\Repositorios\\MedicoErp\\MedicoErp.Model\\MedicoErp.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repositorios\\MedicoErp_\\MedicoErp.Model\\MedicoErp.Model.csproj",
+        "projectUniqueName": "C:\\Repositorios\\MedicoErp\\MedicoErp.Model\\MedicoErp.Model.csproj",
         "projectName": "MedicoErp.Model",
-        "projectPath": "C:\\Repositorios\\MedicoErp_\\MedicoErp.Model\\MedicoErp.Model.csproj",
+        "projectPath": "C:\\Repositorios\\MedicoErp\\MedicoErp.Model\\MedicoErp.Model.csproj",
         "packagesPath": "C:\\Users\\Steven Torres\\.nuget\\packages\\",
-        "outputPath": "C:\\Repositorios\\MedicoErp_\\MedicoErp.Model\\obj\\",
+        "outputPath": "C:\\Repositorios\\MedicoErp\\MedicoErp.Model\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

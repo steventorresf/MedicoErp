@@ -11,9 +11,8 @@ using System.Threading.Tasks;
 
 namespace MedicoErp.Areas.General.Controllers
 {
-    [Route("[area]/api/[controller]")]
+    [Route("General/api/[controller]")]
     [ApiController]
-    [Area(Constantes.Area_General)]
     public class ServicioController : ControllerBase
     {
         private readonly IServicioBusiness servicioBusiness;

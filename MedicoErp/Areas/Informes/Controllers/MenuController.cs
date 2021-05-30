@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MedicoErp.Areas.Informes.Controllers
 {
-    [Area("Informes")]
+    [Area(Constantes.Area_Informes)]
     public class MenuController : Controller
     {
         public IActionResult Index()

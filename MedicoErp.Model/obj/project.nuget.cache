@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ts3iiTESihLWH2v/zukoFQ3Hd10kXYJjlfR14zSmdieGjYIMVaiXTh6KG134zuCdlOdAmCoc8t07jZzhLKo2dg==",
+  "dgSpecHash": "XB8Nl7JSMYKpaYSq7czDocYJLzV54v+/FfF89MCiCx69I5aHUjK8viLbQ4HBGrAvixHqXRf1BOt6qwvCtmaUog==",
   "success": true,
-  "projectFilePath": "C:\\Repositorios\\MedicoErp_\\MedicoErp.Model\\MedicoErp.Model.csproj",
+  "projectFilePath": "C:\\Repositorios\\MedicoErp\\MedicoErp.Model\\MedicoErp.Model.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Steven Torres\\.nuget\\packages\\closedxml\\0.95.4\\closedxml.0.95.4.nupkg.sha512",
     "C:\\Users\\Steven Torres\\.nuget\\packages\\documentformat.openxml\\2.7.2\\documentformat.openxml.2.7.2.nupkg.sha512",

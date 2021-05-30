@@ -13,9 +13,8 @@ using Newtonsoft.Json.Linq;
 
 namespace MedicoErp.Areas.Admision.Controllers
 {
-    [Route("[area]/api/[controller]")]
+    [Route("Admision/api/[controller]")]
     [ApiController]
-    [Area(Constantes.Area_Admision)]
     public class CitaController : ControllerBase
     {
         private readonly ICitaBusiness citaBusiness;

@@ -9,9 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MedicoErp.Areas.General.Controllers
 {
-    [Route("[area]/api/[controller]")]
+    [Route("General/api/[controller]")]
     [ApiController]
-    [Area(Constantes.Area_General)]
     public class DepartamentoController : ControllerBase
     {
         private readonly IDepartamentoBusiness departamentoBusiness;

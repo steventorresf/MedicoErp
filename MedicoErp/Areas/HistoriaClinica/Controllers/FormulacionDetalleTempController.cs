@@ -10,9 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MedicoErp.Areas.HistoriaClinica.Controllers
 {
-    [Route("[area]/api/[controller]")]
+    [Route("HistoriaClinica/api/[controller]")]
     [ApiController]
-    [Area(Constantes.Area_HistoriaClinica)]
     public class FormulacionDetalleTempController : ControllerBase
     {
         private readonly IFormulacionDetalleBusinessTemp formulacionDetalleBusinessTemp;

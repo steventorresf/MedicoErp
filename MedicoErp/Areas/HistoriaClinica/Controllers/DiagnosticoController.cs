@@ -10,9 +10,8 @@ using Newtonsoft.Json.Linq;
 
 namespace MedicoErp.Areas.HistoriaClinica.Controllers
 {
-    [Route("[area]/api/[controller]")]
+    [Route("HistoriaClinica/api/[controller]")]
     [ApiController]
-    [Area(Constantes.Area_HistoriaClinica)]
     public class DiagnosticoController : ControllerBase
     {
         private readonly IDiagnosticoBusiness diagnosticoBusiness;

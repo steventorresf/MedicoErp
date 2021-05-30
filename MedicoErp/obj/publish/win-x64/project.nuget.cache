@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kqgJYn4HnntpH7RH6Mj1Jb1P5sri4uwa5YliQAcUGu+Isx/YVhhy43dVtm/v2Jw8zuHeWB2X5o1lDgiM3NmtSQ==",
+  "dgSpecHash": "zItNAnEVpcSLhEDrtxBUeiYNlszyaTyDjlP8L+BanUkOirle8GgbbwDB/+tZpVOAdW3DZnexesniWS/JoWoj7A==",
   "success": true,
-  "projectFilePath": "C:\\Repositorios\\MedicoErp_\\MedicoErp\\MedicoErp.csproj",
+  "projectFilePath": "C:\\Repositorios\\MedicoErp\\MedicoErp\\MedicoErp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Steven Torres\\.nuget\\packages\\angularjs\\1.7.8.1\\angularjs.1.7.8.1.nupkg.sha512",
     "C:\\Users\\Steven Torres\\.nuget\\packages\\buildbundlerminifier\\3.2.449\\buildbundlerminifier.3.2.449.nupkg.sha512",
