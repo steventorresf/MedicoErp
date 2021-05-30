@@ -108,7 +108,7 @@
                 </div>
                 <!-- Sidebar Navidation Menus--><span class="heading">Principal</span>
                 <ul class="list-unstyled">
-                    <li><a href="@Url.Content("~/")Home"> <i class="icon-home"></i>Home </a></li>                    
+                    <li><a href="@Url.Content("~/")Home"> <i class="icon-home"></i>Home </a></li>
                     <li ng-if="vm.userApp.menu.includes('|A|')">
                         <a href="#DropdownAdmision" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-calendar-o"></i>Admisi&oacute;n </a>
                         <ul id="DropdownAdmision" class="collapse list-unstyled ">
@@ -156,7 +156,6 @@
 
                 <script src="~/js/basic.min.js"></script>
                 <link rel="stylesheet" href="~/css/basic.min.css" />
-                <script src="~/js/services.min.js"></script>
 
 
 
@@ -193,5 +192,37 @@
             </div>
         </div>
     </div>
+
+    <!--Service Admision-->
+    <script src="~/master/services/admision/cita.service.js"></script>
+    <script src="~/master/services/admision/convenio.service.js"></script>
+    <script src="~/master/services/admision/convenioServicio.service.js"></script>
+    <script src="~/master/services/admision/facturacion.service.js"></script>
+    <script src="~/master/services/admision/horario.service.js"></script>
+    <script src="~/master/services/admision/paciente.service.js"></script>
+    <script src="~/master/services/admision/servicioOrdenado.service.js"></script>
+
+    <!--Service General-->
+    <script src="~/master/services/general/centroAtencion.service.js"></script>
+    <script src="~/master/services/general/claseServicio.service.js"></script>
+    <script src="~/master/services/general/departamento.service.js"></script>
+    <script src="~/master/services/general/menuUsuario.service.js"></script>
+    <script src="~/master/services/general/municipio.service.js"></script>
+    <script src="~/master/services/general/servicio.service.js"></script>
+    <script src="~/master/services/general/tablaDetalle.service.js"></script>
+    <script src="~/master/services/general/tipoServicio.service.js"></script>
+    <script src="~/master/services/general/usuario.service.js"></script>
+
+    <!--Service HistoriaClinica-->
+    <script src="~/master/services/historiaClinica/diagnostico.service.js"></script>
+    <script src="~/master/services/historiaClinica/evento.service.js"></script>
+    <script src="~/master/services/historiaClinica/folio.service.js"></script>
+    <script src="~/master/services/historiaClinica/folioDetalle.service.js"></script>
+    <script src="~/master/services/historiaClinica/formato.service.js"></script>
+    <script src="~/master/services/historiaClinica/formulacion.service.js"></script>
+    <script src="~/master/services/historiaClinica/formulacionDetalleTemp.service.js"></script>
+    <script src="~/master/services/historiaClinica/multimedia.service.js"></script>
+    <script src="~/master/services/historiaClinica/orden.service.js"></script>
+    <script src="~/master/services/historiaClinica/ordenDetalleTemp.service.js"></script>
 </body>
 </html>

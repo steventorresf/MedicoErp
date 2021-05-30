@@ -8,7 +8,7 @@
     FormulacionService.$inject = ['$http', '$q'];
 
     function FormulacionService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/Formulacion/';
+        var nameSpace = url + 'HistoriaClinica/api/Formulacion/';
 
         var service = {
             getAllByIdEvento: getAllByIdEvento,

@@ -8,7 +8,7 @@
     FolioService.$inject = ['$http', '$q'];
 
     function FolioService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/Folio/';
+        var nameSpace = url + 'HistoriaClinica/api/Folio/';
 
         var service = {
             getAllByIdEvento: getAllByIdEvento,

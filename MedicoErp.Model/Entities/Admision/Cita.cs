@@ -116,6 +116,9 @@ namespace MedicoErp.Model.Entities.Admision
         public string SFecha { get; set; }
 
         [NotMapped]
+        public DateTime HoraDate { get; set; }
+
+        [NotMapped]
         public long IdServicioOrdenado { get; set; }
 
         [NotMapped]

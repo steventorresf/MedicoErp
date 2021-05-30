@@ -8,7 +8,7 @@
     FolioDetalleService.$inject = ['$http', '$q'];
 
     function FolioDetalleService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/FolioDetalle/';
+        var nameSpace = url + 'HistoriaClinica/api/FolioDetalle/';
 
         var service = {
             getAllByIdFolio: getAllByIdFolio,

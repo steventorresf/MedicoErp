@@ -8,7 +8,7 @@
     ClaseServicioService.$inject = ['$http', '$q'];
 
     function ClaseServicioService($http, $q) {
-        var nameSpace = '/General/api/ClaseServicio/';
+        var nameSpace = url + 'General/api/ClaseServicio/';
 
         var service = {
             getAll: getAll,

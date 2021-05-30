@@ -8,7 +8,7 @@
     CitaService.$inject = ['$http', '$q'];
 
     function CitaService($http, $q) {
-        var nameSpace = '/Admision/api/Cita/';
+        var nameSpace = url + 'Admision/api/Cita/';
 
         var service = {
             getAllHor: getAllHor,

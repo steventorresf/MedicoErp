@@ -8,7 +8,7 @@
     CentroAtencionService.$inject = ['$http', '$q'];
 
     function CentroAtencionService($http, $q) {
-        var nameSpace = '/General/api/CentroAtencion/';
+        var nameSpace = url + 'General/api/CentroAtencion/';
 
         var service = {
             get: get,

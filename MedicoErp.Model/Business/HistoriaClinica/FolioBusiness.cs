@@ -184,7 +184,7 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                                  fd.IdDetalle,
                                  pr.IdPregunta,
                                  pr.NombrePregunta,
-                                 OrdePregunta = pr.Orden,
+                                 OrdenPregunta = pr.Orden,
                                  fd.TipoDato,
                                  fd.IdTipoRespuesta,
                                  fd.Valor,
@@ -193,7 +193,7 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                                  pr.CodEstado,
                                  fd.CreadoPor,
                                  fd.FechaCreado,
-                             })
+                             }).ToList()
                              .GroupBy(x => new { x.IdArea, x.NombreArea, x.OrdenArea, x.Visible })
                              .Select(a => new
                              {
@@ -201,7 +201,7 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                                  a.Key.NombreArea,
                                  a.Key.OrdenArea,
                                  a.Key.Visible,
-                                 ListaDet = a.OrderBy(p => p.OrdePregunta)
+                                 ListaDet = a
                              }).ToList();
 
                 List<Area> ListaAreas = new List<Area>();
@@ -214,13 +214,14 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                     entityAr.Visible = a.Visible;
                     entityAr.ListaPreguntas = new List<Pregunta>();
 
+                    var ListaDet = a.ListaDet.OrderBy(x => x.OrdenPregunta).ToList();
                     foreach (var p in a.ListaDet)
                     {
                         Pregunta entityPr = new Pregunta();
                         entityPr.IdDetalle = p.IdDetalle;
                         entityPr.IdPregunta = p.IdPregunta;
                         entityPr.NombrePregunta = p.NombrePregunta;
-                        entityPr.Orden = p.OrdePregunta;
+                        entityPr.Orden = p.OrdenPregunta;
                         entityPr.TipoDato = p.TipoDato;
                         entityPr.IdTipoRespuesta = p.IdTipoRespuesta;
                         entityPr.Valor = p.Valor;

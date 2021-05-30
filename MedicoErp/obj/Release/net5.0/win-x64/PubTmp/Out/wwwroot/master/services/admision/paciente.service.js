@@ -8,7 +8,7 @@
     PacienteService.$inject = ['$http', '$q'];
 
     function PacienteService($http, $q) {
-        var nameSpace = '/Admision/api/Paciente/';
+        var nameSpace = url + 'Admision/api/Paciente/';
 
         var service = {
             getByIden: getByIden,

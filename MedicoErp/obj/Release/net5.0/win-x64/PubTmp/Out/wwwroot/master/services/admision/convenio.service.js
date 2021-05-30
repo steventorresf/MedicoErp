@@ -8,7 +8,7 @@
     ConvenioService.$inject = ['$http', '$q'];
 
     function ConvenioService($http, $q) {
-        var nameSpace = '/Admision/api/Convenio/';
+        var nameSpace = url + 'Admision/api/Convenio/';
 
         var service = {
             getAll: getAll,

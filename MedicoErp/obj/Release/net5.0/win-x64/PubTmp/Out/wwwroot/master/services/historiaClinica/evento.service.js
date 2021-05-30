@@ -8,7 +8,7 @@
     EventoService.$inject = ['$http', '$q'];
 
     function EventoService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/Evento/';
+        var nameSpace = url + 'HistoriaClinica/api/Evento/';
 
         var service = {
             getAllByIdPaciente: getAllByIdPaciente,

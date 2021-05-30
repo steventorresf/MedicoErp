@@ -8,7 +8,7 @@
     DiagnosticoService.$inject = ['$http', '$q'];
 
     function DiagnosticoService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/Diagnostico/';
+        var nameSpace = url + 'HistoriaClinica/api/Diagnostico/';
 
         var service = {
             getByPrefix: getByPrefix,

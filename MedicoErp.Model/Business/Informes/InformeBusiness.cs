@@ -49,14 +49,29 @@ namespace MedicoErp.Model.Business.Informes
                 foreach (var c in Lista)
                 {
                     irow++;
-                    worksheet.Cell(irow, 1).Value = c.SFecha;
-                    worksheet.Cell(irow, 2).Value = c.Hora;
+                    worksheet.Cell(irow, 1).Value = c.Fecha.Date;
+                    worksheet.Cell(irow, 1).DataType = XLDataType.DateTime;
+
+                    worksheet.Cell(irow, 2).Value = c.HoraDate.TimeOfDay;
+                    worksheet.Cell(irow, 2).DataType = XLDataType.TimeSpan;
+
                     worksheet.Cell(irow, 3).Value = c.NombrePaciente;
+                    worksheet.Cell(irow, 3).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 4).Value = c.Identificacion;
+                    worksheet.Cell(irow, 4).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 5).Value = c.Telefono;
+                    worksheet.Cell(irow, 5).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 6).Value = c.NombreConvenio;
+                    worksheet.Cell(irow, 6).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 7).Value = c.NombreServicio;
+                    worksheet.Cell(irow, 7).DataType = XLDataType.Text;
                 }
+
+                worksheet.Columns().AdjustToContents();
 
                 MemoryStream ms = new MemoryStream();
                 workbook.SaveAs(ms);
@@ -99,23 +114,56 @@ namespace MedicoErp.Model.Business.Informes
                 foreach (Cita c in Lista)
                 {
                     irow++;
-                    worksheet.Cell(irow, 1).Value = c.Fecha.ToString("dd/MM/yyyy");
+                    worksheet.Cell(irow, 1).Value = c.Fecha.Date;
+                    worksheet.Cell(irow, 1).DataType = XLDataType.DateTime;
+
                     worksheet.Cell(irow, 2).Value = c.TipoDocumento;
+                    worksheet.Cell(irow, 2).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 3).Value = c.NumDocumento;
+                    worksheet.Cell(irow, 3).DataType = XLDataType.Number;
+
                     worksheet.Cell(irow, 4).Value = c.NombreCentro;
+                    worksheet.Cell(irow, 4).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 5).Value = c.TipoIdentificacion;
+                    worksheet.Cell(irow, 5).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 6).Value = c.Identificacion;
+                    worksheet.Cell(irow, 6).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 7).Value = c.NombrePaciente;
+                    worksheet.Cell(irow, 7).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 8).Value = c.Telefono;
+                    worksheet.Cell(irow, 8).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 9).Value = c.NombreConvenio;
+                    worksheet.Cell(irow, 9).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 10).Value = c.NombreMedico;
+                    worksheet.Cell(irow, 10).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 11).Value = c.CodigoRef;
+                    worksheet.Cell(irow, 11).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 12).Value = c.NombreClaseServicio;
+                    worksheet.Cell(irow, 12).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 13).Value = c.NombreServicio;
+                    worksheet.Cell(irow, 13).DataType = XLDataType.Text;
+
                     worksheet.Cell(irow, 14).Value = c.Cantidad;
+                    worksheet.Cell(irow, 14).DataType = XLDataType.Number;
+
                     worksheet.Cell(irow, 15).Value = c.Tarifa;
+                    worksheet.Cell(irow, 15).DataType = XLDataType.Number;
+
                     worksheet.Cell(irow, 16).Value = c.VrTotal;
+                    worksheet.Cell(irow, 16).DataType = XLDataType.Number;
                 }
+
+                worksheet.Columns().AdjustToContents();
 
                 MemoryStream ms = new MemoryStream();
                 workbook.SaveAs(ms);

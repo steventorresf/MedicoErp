@@ -8,7 +8,7 @@
     FacturacionService.$inject = ['$http', '$q'];
 
     function FacturacionService($http, $q) {
-        var nameSpace = '/Admision/api/Facturacion/';
+        var nameSpace = url + 'Admision/api/Facturacion/';
 
         var service = {
             createFacturacion: createFacturacion,

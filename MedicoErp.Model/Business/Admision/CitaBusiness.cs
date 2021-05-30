@@ -93,7 +93,7 @@ namespace MedicoErp.Model.Business.Admision
 
                         obCita.IdReserva = horarioNew.IdHorario;
                         obCita.Fecha = horarioNew.Fecha;
-                        obCita.Hora = horarioNew.HoraInicial.ToString("hh:mm tt", new CultureInfo("en-US"));
+                        obCita.Hora = horarioNew.HoraInicial.ToString("hh:mm tt", new CultureInfo("es-CO"));
                         obCita.ModificadoPor = entity.ModificadoPor;
                         obCita.FechaModificado = DateTimeOffset.Now;
                         context.SaveChanges();
@@ -244,7 +244,7 @@ namespace MedicoErp.Model.Business.Admision
                                     select new Cita()
                                     {
                                         IdCita = ci.IdCita,
-                                        Fecha = ci.Fecha + ho.HoraInicial.TimeOfDay,
+                                        Fecha = ci.Fecha,
                                         SFecha = ci.Fecha.ToString("dd/MM/yyyy"),
                                         Cantidad = ci.Cantidad,
                                         IdReserva = ci.IdReserva,
@@ -259,7 +259,8 @@ namespace MedicoErp.Model.Business.Admision
                                         NombreEstado = es.Descripcion,
                                         Identificacion = pa.TipoIden + " " + pa.NumIden,
                                         Telefono = pa.Telefono,
-                                        Hora = ho.HoraInicial.ToString("hh:mm tt", new CultureInfo("es-CO")),
+                                        Hora = ci.Hora,
+                                        HoraDate = ho.HoraInicial.DateTime
                                     }).OrderBy(x => x.Fecha).ToList();
                 return Lista;
             }

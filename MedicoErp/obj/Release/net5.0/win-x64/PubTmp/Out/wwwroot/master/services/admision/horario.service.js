@@ -8,7 +8,7 @@
     HorarioService.$inject = ['$http', '$q'];
 
     function HorarioService($http, $q) {
-        var nameSpace = '/Admision/api/Horario/';
+        var nameSpace = url + 'Admision/api/Horario/';
 
         var service = {
             getAllHor: getAllHor,
