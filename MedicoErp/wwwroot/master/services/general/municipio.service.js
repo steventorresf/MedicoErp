@@ -8,7 +8,7 @@
     MunicipioService.$inject = ['$http', '$q'];
 
     function MunicipioService($http, $q) {
-        var nameSpace = '/General/api/Municipio/';
+        var nameSpace = url + 'General/api/Municipio/';
 
         var service = {
             getAll: getAll,

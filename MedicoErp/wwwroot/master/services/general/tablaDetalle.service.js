@@ -8,7 +8,7 @@
     TablaDetalleService.$inject = ['$http', '$q'];
 
     function TablaDetalleService($http, $q) {
-        var nameSpace = '/General/api/TablaDetalle/';
+        var nameSpace = url + 'General/api/TablaDetalle/';
         var service = {
             getAll: getAll,
         };

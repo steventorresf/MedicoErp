@@ -8,7 +8,7 @@
     MultimediaService.$inject = ['$http', '$q'];
 
     function MultimediaService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/Multimedia/';
+        var nameSpace = url + 'HistoriaClinica/api/Multimedia/';
 
         var service = {
             getAllByIdEvento: getAllByIdEvento,

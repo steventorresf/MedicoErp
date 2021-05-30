@@ -8,7 +8,7 @@
     ServicioOrdenadoService.$inject = ['$http', '$q'];
 
     function ServicioOrdenadoService($http, $q) {
-        var nameSpace = '/Admision/api/ServicioOrdenado/';
+        var nameSpace = url + 'Admision/api/ServicioOrdenado/';
 
         var service = {
             getAllByIdPacAndIdCon: getAllByIdPacAndIdCon,

@@ -8,7 +8,7 @@
     FormatoService.$inject = ['$http', '$q'];
 
     function FormatoService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/Formato/';
+        var nameSpace = url + 'HistoriaClinica/api/Formato/';
 
         var service = {
             getAll: getAll,

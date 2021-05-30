@@ -24,5 +24,4 @@ C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Debug\net5.0\ref\MedicoErp.Model.
 C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Debug\net5.0\MedicoErp.Model.pdb
 C:\Repositorios\MedicoErp_\MedicoErp.Model\obj\Debug\net5.0\MedicoErp.Model.csprojAssemblyReference.cache
 C:\Repositorios\MedicoErp\MedicoErp.Model\bin\Debug\net5.0\itextsharp.dll
-C:\Repositorios\MedicoErp\MedicoErp.Model\obj\Debug\net5.0\MedicoErp.Model.csprojAssemblyReference.cache
 C:\Repositorios\MedicoErp\MedicoErp.Model\obj\Debug\net5.0\MedicoErp.Model.csproj.CopyComplete

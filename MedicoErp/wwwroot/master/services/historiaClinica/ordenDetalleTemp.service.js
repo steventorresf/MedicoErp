@@ -8,7 +8,7 @@
     OrdenDetalleTempService.$inject = ['$http', '$q'];
 
     function OrdenDetalleTempService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/OrdenDetalleTemp/';
+        var nameSpace = url + 'HistoriaClinica/api/OrdenDetalleTemp/';
 
         var service = {
             getAllByIdUsuario: getAllByIdUsuario,

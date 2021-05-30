@@ -8,7 +8,7 @@
     CitaService.$inject = ['$http', '$q'];
 
     function CitaService($http, $q) {
-        var nameSpace = '/Admision/api/Cita/';
+        var nameSpace = url + 'Admision/api/Cita/';
 
         var service = {
             getAllHor: getAllHor,
@@ -326,7 +326,7 @@
     ConvenioService.$inject = ['$http', '$q'];
 
     function ConvenioService($http, $q) {
-        var nameSpace = '/Admision/api/Convenio/';
+        var nameSpace = url + 'Admision/api/Convenio/';
 
         var service = {
             getAll: getAll,
@@ -414,7 +414,7 @@
     ConvenioServicioService.$inject = ['$http', '$q'];
 
     function ConvenioServicioService($http, $q) {
-        var nameSpace = '/Admision/api/ConvenioServicio/';
+        var nameSpace = url + 'Admision/api/ConvenioServicio/';
 
         var service = {
             getAll: getAll,
@@ -516,7 +516,7 @@
     FacturacionService.$inject = ['$http', '$q'];
 
     function FacturacionService($http, $q) {
-        var nameSpace = '/Admision/api/Facturacion/';
+        var nameSpace = url + 'Admision/api/Facturacion/';
 
         var service = {
             createFacturacion: createFacturacion,
@@ -804,7 +804,7 @@
     HorarioService.$inject = ['$http', '$q'];
 
     function HorarioService($http, $q) {
-        var nameSpace = '/Admision/api/Horario/';
+        var nameSpace = url + 'Admision/api/Horario/';
 
         var service = {
             getAllHor: getAllHor,
@@ -893,7 +893,7 @@
     PacienteService.$inject = ['$http', '$q'];
 
     function PacienteService($http, $q) {
-        var nameSpace = '/Admision/api/Paciente/';
+        var nameSpace = url + 'Admision/api/Paciente/';
 
         var service = {
             getByIden: getByIden,
@@ -953,7 +953,7 @@
     ServicioOrdenadoService.$inject = ['$http', '$q'];
 
     function ServicioOrdenadoService($http, $q) {
-        var nameSpace = '/Admision/api/ServicioOrdenado/';
+        var nameSpace = url + 'Admision/api/ServicioOrdenado/';
 
         var service = {
             getAllByIdPacAndIdCon: getAllByIdPacAndIdCon,
@@ -1029,7 +1029,7 @@
     CentroAtencionService.$inject = ['$http', '$q'];
 
     function CentroAtencionService($http, $q) {
-        var nameSpace = '/General/api/CentroAtencion/';
+        var nameSpace = url + 'General/api/CentroAtencion/';
 
         var service = {
             get: get,
@@ -1131,7 +1131,7 @@
     ClaseServicioService.$inject = ['$http', '$q'];
 
     function ClaseServicioService($http, $q) {
-        var nameSpace = '/General/api/ClaseServicio/';
+        var nameSpace = url + 'General/api/ClaseServicio/';
 
         var service = {
             getAll: getAll,
@@ -1164,7 +1164,7 @@
     DepartamentoService.$inject = ['$http', '$q'];
 
     function DepartamentoService($http, $q) {
-        var nameSpace = '/General/api/Departamento/';
+        var nameSpace = url + 'General/api/Departamento/';
 
         var service = {
             getAll: getAll,
@@ -1196,7 +1196,7 @@
     MenuUsuarioService.$inject = ['$http', '$q'];
 
     function MenuUsuarioService($http, $q) {
-        var nameSpace = '/General/api/MenuUsuario/';
+        var nameSpace = url + 'General/api/MenuUsuario/';
         var service = {
             setMenuUsuario: setMenuUsuario,
             getAllByIdUsuario: getAllByIdUsuario,
@@ -1284,7 +1284,7 @@
     MunicipioService.$inject = ['$http', '$q'];
 
     function MunicipioService($http, $q) {
-        var nameSpace = '/General/api/Municipio/';
+        var nameSpace = url + 'General/api/Municipio/';
 
         var service = {
             getAll: getAll,
@@ -1316,7 +1316,7 @@
     ServicioService.$inject = ['$http', '$q'];
 
     function ServicioService($http, $q) {
-        var nameSpace = '/General/api/Servicio/';
+        var nameSpace = url + 'General/api/Servicio/';
 
         var service = {
             getAll: getAll,
@@ -1390,7 +1390,7 @@
     TablaDetalleService.$inject = ['$http', '$q'];
 
     function TablaDetalleService($http, $q) {
-        var nameSpace = '/General/api/TablaDetalle/';
+        var nameSpace = url + 'General/api/TablaDetalle/';
         var service = {
             getAll: getAll,
         };
@@ -1421,7 +1421,7 @@
     TipoServicioService.$inject = ['$http', '$q'];
 
     function TipoServicioService($http, $q) {
-        var nameSpace = '/General/api/TipoServicio/';
+        var nameSpace = url + 'General/api/TipoServicio/';
 
         var service = {
             getAll: getAll,
@@ -1454,7 +1454,7 @@
     UsuarioService.$inject = ['$http', '$q'];
 
     function UsuarioService($http, $q) {
-        var nameSpace = '/General/api/Usuario/';
+        var nameSpace = url + 'General/api/Usuario/';
 
         var service = {
             Login: Login,
@@ -1585,7 +1585,7 @@
     DiagnosticoService.$inject = ['$http', '$q'];
 
     function DiagnosticoService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/Diagnostico/';
+        var nameSpace = url + 'HistoriaClinica/api/Diagnostico/';
 
         var service = {
             getByPrefix: getByPrefix,
@@ -1673,7 +1673,7 @@
     EventoService.$inject = ['$http', '$q'];
 
     function EventoService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/Evento/';
+        var nameSpace = url + 'HistoriaClinica/api/Evento/';
 
         var service = {
             getAllByIdPaciente: getAllByIdPaciente,
@@ -2086,7 +2086,7 @@
     FolioService.$inject = ['$http', '$q'];
 
     function FolioService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/Folio/';
+        var nameSpace = url + 'HistoriaClinica/api/Folio/';
 
         var service = {
             getAllByIdEvento: getAllByIdEvento,
@@ -2175,7 +2175,7 @@
     FolioDetalleService.$inject = ['$http', '$q'];
 
     function FolioDetalleService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/FolioDetalle/';
+        var nameSpace = url + 'HistoriaClinica/api/FolioDetalle/';
 
         var service = {
             getAllByIdFolio: getAllByIdFolio,
@@ -2223,7 +2223,7 @@
     FormatoService.$inject = ['$http', '$q'];
 
     function FormatoService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/Formato/';
+        var nameSpace = url + 'HistoriaClinica/api/Formato/';
 
         var service = {
             getAll: getAll,
@@ -2270,7 +2270,7 @@
     FormulacionService.$inject = ['$http', '$q'];
 
     function FormulacionService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/Formulacion/';
+        var nameSpace = url + 'HistoriaClinica/api/Formulacion/';
 
         var service = {
             getAllByIdEvento: getAllByIdEvento,
@@ -2569,7 +2569,7 @@
     FormulacionDetalleTempService.$inject = ['$http', '$q'];
 
     function FormulacionDetalleTempService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/FormulacionDetalleTemp/';
+        var nameSpace = url + 'HistoriaClinica/api/FormulacionDetalleTemp/';
 
         var service = {
             getAllByIdUsuario: getAllByIdUsuario,
@@ -2630,7 +2630,7 @@
     MultimediaService.$inject = ['$http', '$q'];
 
     function MultimediaService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/Multimedia/';
+        var nameSpace = url + 'HistoriaClinica/api/Multimedia/';
 
         var service = {
             getAllByIdEvento: getAllByIdEvento,
@@ -2789,7 +2789,7 @@
     OrdenService.$inject = ['$http', '$q'];
 
     function OrdenService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/Orden/';
+        var nameSpace = url + 'HistoriaClinica/api/Orden/';
 
         var service = {
             getAllByIdEvento: getAllByIdEvento,
@@ -3084,7 +3084,7 @@
     OrdenDetalleTempService.$inject = ['$http', '$q'];
 
     function OrdenDetalleTempService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/OrdenDetalleTemp/';
+        var nameSpace = url + 'HistoriaClinica/api/OrdenDetalleTemp/';
 
         var service = {
             getAllByIdUsuario: getAllByIdUsuario,

@@ -8,7 +8,7 @@
     FormulacionDetalleTempService.$inject = ['$http', '$q'];
 
     function FormulacionDetalleTempService($http, $q) {
-        var nameSpace = '/HistoriaClinica/api/FormulacionDetalleTemp/';
+        var nameSpace = url + 'HistoriaClinica/api/FormulacionDetalleTemp/';
 
         var service = {
             getAllByIdUsuario: getAllByIdUsuario,

@@ -8,7 +8,7 @@
     MenuUsuarioService.$inject = ['$http', '$q'];
 
     function MenuUsuarioService($http, $q) {
-        var nameSpace = '/General/api/MenuUsuario/';
+        var nameSpace = url + 'General/api/MenuUsuario/';
         var service = {
             setMenuUsuario: setMenuUsuario,
             getAllByIdUsuario: getAllByIdUsuario,

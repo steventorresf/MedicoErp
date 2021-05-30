@@ -8,7 +8,7 @@
     UsuarioService.$inject = ['$http', '$q'];
 
     function UsuarioService($http, $q) {
-        var nameSpace = '/General/api/Usuario/';
+        var nameSpace = url + 'General/api/Usuario/';
 
         var service = {
             Login: Login,
