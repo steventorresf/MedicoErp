@@ -73,7 +73,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;

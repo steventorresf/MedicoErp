@@ -61,20 +61,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
-                .then(
-                    function (response) {
-                        return response;
-                    },
-                    function (errResponse) {
-                        console.log(errResponse);
-                        return $q.reject(errResponse);
-                    }
-                );
-        }
-
-        function updateTar(data) {
-            return $http.post(nameSpace + 'UpTar', data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;

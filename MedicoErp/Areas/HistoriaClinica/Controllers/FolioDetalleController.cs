@@ -22,7 +22,7 @@ namespace MedicoErp.Areas.HistoriaClinica.Controllers
         }
 
 
-        [HttpPut("{IdDetalle}")]
+        [HttpPost("{IdDetalle}")]
         public IActionResult Update(long IdDetalle, [FromBody] FolioDetalle entity)
         {
             try

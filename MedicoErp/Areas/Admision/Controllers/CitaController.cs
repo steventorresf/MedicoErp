@@ -80,7 +80,7 @@ namespace MedicoErp.Areas.Admision.Controllers
             }
         }
 
-        [HttpPut("{IdCita}")]
+        [HttpPost("{IdCita}")]
         public IActionResult Update(long IdCita, [FromBody] Cita entity)
         {
             try

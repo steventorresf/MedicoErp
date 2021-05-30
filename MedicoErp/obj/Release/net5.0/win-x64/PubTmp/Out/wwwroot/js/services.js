@@ -118,7 +118,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;
@@ -378,7 +378,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;
@@ -869,7 +869,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;
@@ -930,7 +930,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;
@@ -1095,7 +1095,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;
@@ -1108,7 +1108,7 @@
         }
 
         function updateExterno(id, data) {
-            return $http.put(nameSpace + 'Ext/' + id, data)
+            return $http.post(nameSpace + 'Ext/' + id, data)
                 .then(
                     function (response) {
                         return response;
@@ -1354,7 +1354,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;
@@ -1522,7 +1522,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;
@@ -1548,7 +1548,7 @@
         }
 
         function resetClave(id) {
-            return $http.put(nameSpace + 'Reset/' + id + '/')
+            return $http.post(nameSpace + 'Reset/' + id + '/')
                 .then(
                     function (response) {
                         return response;
@@ -1589,9 +1589,6 @@
 
         var service = {
             getByPrefix: getByPrefix,
-            create: create,
-            update: update,
-            remove: remove,
         };
 
         return service;
@@ -1608,59 +1605,6 @@
                     }
                 );
         }
-
-        function create(data) {
-            return $http.post(nameSpace, data)
-                .then(
-                    function (response) {
-                        return response;
-                    },
-                    function (errResponse) {
-                        console.log(errResponse);
-                        return $q.reject(errResponse);
-                    }
-                );
-        }
-
-        function update(id, data) {
-            return $http.put(nameSpace + id, data)
-                .then(
-                    function (response) {
-                        return response;
-                    },
-                    function (errResponse) {
-                        console.log(errResponse);
-                        return $q.reject(errResponse);
-                    }
-                );
-        }
-
-        function updateTar(data) {
-            return $http.post(nameSpace + 'UpTar', data)
-                .then(
-                    function (response) {
-                        return response;
-                    },
-                    function (errResponse) {
-                        console.log(errResponse);
-                        return $q.reject(errResponse);
-                    }
-                );
-        }
-
-        function remove(data) {
-            return $http.post(nameSpace + 'Cancel/', data)
-                .then(
-                    function (response) {
-                        return response;
-                    },
-                    function (errResponse) {
-                        console.log(errResponse);
-                        return $q.reject(errResponse);
-                    }
-                );
-        }
-
     }
 })();
 (function () {
@@ -1742,7 +1686,7 @@
         }
 
         function update(idEvento, data) {
-            return $http.put(nameSpace + idEvento, data)
+            return $http.post(nameSpace + idEvento, data)
                 .then(
                     function (response) {
                         return response;
@@ -1755,7 +1699,7 @@
         }
 
         function finalizarEvento(idEvento, data) {
-            return $http.put(nameSpace + 'Finalizar/' + idEvento, data)
+            return $http.post(nameSpace + 'Finalizar/' + idEvento, data)
                 .then(
                     function (response) {
                         return response;
@@ -2199,7 +2143,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;
@@ -2323,7 +2267,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;
@@ -2752,7 +2696,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;
@@ -2842,20 +2786,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
-                .then(
-                    function (response) {
-                        return response;
-                    },
-                    function (errResponse) {
-                        console.log(errResponse);
-                        return $q.reject(errResponse);
-                    }
-                );
-        }
-
-        function updateTar(data) {
-            return $http.post(nameSpace + 'UpTar', data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;
@@ -3122,7 +3053,7 @@
         }
 
         function update(id, data) {
-            return $http.put(nameSpace + id, data)
+            return $http.post(nameSpace + id, data)
                 .then(
                     function (response) {
                         return response;

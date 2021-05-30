@@ -65,7 +65,7 @@ namespace MedicoErp.Areas.Admision.Controllers
             }
         }
 
-        [HttpPut("{IdCon}")]
+        [HttpPost("{IdCon}")]
         public IActionResult Put(int IdCon, [FromBody] Convenio entity)
         {
             try

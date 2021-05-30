@@ -51,7 +51,7 @@ namespace MedicoErp.Areas.General.Controllers
             }
         }
 
-        [HttpPut("{IdSer}")]
+        [HttpPost("{IdSer}")]
         public IActionResult Put(int IdSer, [FromBody] Servicio entity)
         {
             try

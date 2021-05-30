@@ -89,7 +89,7 @@ namespace MedicoErp.Areas.General.Controllers
             }
         }
 
-        [HttpPut("{IdUsuario}")]
+        [HttpPost("{IdUsuario}")]
         public IActionResult Put(int IdUsuario, [FromBody] Usuario entity)
         {
             try
@@ -103,7 +103,7 @@ namespace MedicoErp.Areas.General.Controllers
             }
         }
 
-        [HttpPut("Inact/{IdUsuario}")]
+        [HttpPost("Inact/{IdUsuario}")]
         public IActionResult PutInactivar(int IdUsuario)
         {
             try
@@ -117,7 +117,7 @@ namespace MedicoErp.Areas.General.Controllers
             }
         }
 
-        [HttpPut("Act/{IdUsuario}")]
+        [HttpPost("Act/{IdUsuario}")]
         public IActionResult PutActivar(int IdUsuario)
         {
             try
@@ -131,7 +131,7 @@ namespace MedicoErp.Areas.General.Controllers
             }
         }
 
-        [HttpPut("RClave/{IdUsuario}")]
+        [HttpPost("RClave/{IdUsuario}")]
         public IActionResult PutResetClave(int IdUsuario)
         {
             try

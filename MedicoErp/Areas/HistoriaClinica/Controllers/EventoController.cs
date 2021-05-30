@@ -109,7 +109,7 @@ namespace MedicoErp.Areas.HistoriaClinica.Controllers
             }
         }
 
-        [HttpPut("{IdEvento}")]
+        [HttpPost("{IdEvento}")]
         public IActionResult Update(long IdEvento, [FromBody] JObject data)
         {
             try
@@ -127,7 +127,7 @@ namespace MedicoErp.Areas.HistoriaClinica.Controllers
             }
         }
 
-        [HttpPut("Finalizar/{IdEvento}")]
+        [HttpPost("Finalizar/{IdEvento}")]
         public IActionResult FinalizarEvento(long IdEvento, [FromBody] JObject data)
         {
             try

@@ -78,7 +78,7 @@ namespace MedicoErp.Areas.General.Controllers
             }
         }
 
-        [HttpPut("{idCentro}")]
+        [HttpPost("{idCentro}")]
         public IActionResult Update(int idCentro, [FromBody] CentroAtencion entity)
         {
             try
@@ -92,7 +92,7 @@ namespace MedicoErp.Areas.General.Controllers
             }
         }
 
-        [HttpPut("Ext/{idCentro}")]
+        [HttpPost("Ext/{idCentro}")]
         public IActionResult UpdateExterno(int idCentro, [FromBody] CentroAtencion entity)
         {
             try

@@ -77,7 +77,7 @@
         }
 
         function update(idEvento, data) {
-            return $http.put(nameSpace + idEvento, data)
+            return $http.post(nameSpace + idEvento, data)
                 .then(
                     function (response) {
                         return response;
@@ -90,7 +90,7 @@
         }
 
         function finalizarEvento(idEvento, data) {
-            return $http.put(nameSpace + 'Finalizar/' + idEvento, data)
+            return $http.post(nameSpace + 'Finalizar/' + idEvento, data)
                 .then(
                     function (response) {
                         return response;

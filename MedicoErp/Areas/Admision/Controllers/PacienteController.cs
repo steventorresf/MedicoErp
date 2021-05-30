@@ -56,7 +56,7 @@ namespace MedicoErp.Areas.Admision.Controllers
             }
         }
 
-        [HttpPut("{IdPac}")]
+        [HttpPost("{IdPac}")]
         public IActionResult Put(long IdPac, [FromBody] Paciente entity)
         {
             try
