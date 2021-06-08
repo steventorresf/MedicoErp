@@ -600,7 +600,6 @@
                 [
                     { text: 'Cups', alignment: 'center', bold: true, },
                     { text: 'Servicio', alignment: 'center', bold: true, },
-                    { text: 'Médico', alignment: 'center', bold: true, },
                     { text: 'Fecha', alignment: 'center', bold: true, },
                     { text: 'Cant', alignment: 'center', bold: true, },
                     { text: 'Total', alignment: 'center', bold: true, },
@@ -614,7 +613,6 @@
                     [
                         { text: d.codigoRef, alignment: 'center', },
                         { text: d.nombreServicio, alignment: 'left', },
-                        { text: d.nombreMedico, alignment: 'left', },
                         { text: d.sFecha, alignment: 'center', },
                         { text: d.cantidad, alignment: 'center', },
                         { text: PonerPuntosDouble(d.vrTotal), alignment: 'right', },
@@ -642,7 +640,7 @@
                             body: [
                                 [
                                     {
-                                        text: entity.centroAtencion.nombreCentro,
+                                        text: entity.medico.nombreCompleto,
                                         alignment: 'center',
                                         bold: true,
                                         fontSize: 14,
@@ -652,7 +650,7 @@
                                 ],
                                 [
                                     {
-                                        text: entity.centroAtencion.nitCentro,
+                                        text: entity.medico.numIden,
                                         alignment: 'center',
                                         bold: true,
                                     },
@@ -669,7 +667,7 @@
                                 ],
                                 [
                                     {
-                                        text: entity.centroAtencion.direccion,
+                                        text: entity.medico.direccion,
                                         alignment: 'center',
                                         bold: true,
                                     },
@@ -686,7 +684,7 @@
                                 ],
                                 [
                                     {
-                                        text: entity.centroAtencion.telefono,
+                                        text: entity.medico.telefono,
                                         alignment: 'center',
                                         bold: true,
                                     },
@@ -746,7 +744,7 @@
                     {
                         style: 'estilo',
                         table: {
-                            widths: ['8%', '44%', '22%', '12%', '4%', '10%'],
+                            widths: ['8%', '66%', '12%', '4%', '10%'],
                             body: listaDet
                         },
                         layout: {
@@ -765,15 +763,15 @@
                                     { text: '$ ' + PonerPuntosDouble(vrTotal), alignment: 'right', bold: true, },
                                 ],
                                 [
-                                    { text: entity.centroRemision.nombreCentro, bold: true, colSpan: 2, },
+                                    { text: entity.centroAtencionNombre, bold: true, colSpan: 2, },
                                     {},
                                 ],
                                 [
-                                    { text: entity.centroRemision.direccion, colSpan: 2 },
+                                    { text: entity.centroAtencionDireccion, colSpan: 2 },
                                     {},
                                 ],
                                 [
-                                    { text: entity.centroRemision.telefono, colSpan: 2 },
+                                    { text: entity.centroAtencionTelefono, colSpan: 2 },
                                     {},
                                 ],
                             ]
@@ -1202,6 +1200,7 @@
             getAllByIdUsuario: getAllByIdUsuario,
             getNotAllByIdUsuario: getNotAllByIdUsuario,
             create: create,
+            creates: creates,
             remove: remove
         };
 
@@ -1249,6 +1248,19 @@
 
         function create(data) {
             return $http.post(nameSpace, data)
+                .then(
+                    function (response) {
+                        return response;
+                    },
+                    function (errResponse) {
+                        console.log(errResponse);
+                        return $q.reject(errResponse);
+                    }
+                );
+        }
+
+        function creates(data) {
+            return $http.post(nameSpace + 'Creates/', data)
                 .then(
                     function (response) {
                         return response;
@@ -1821,25 +1833,25 @@
 
             var content = [
                 {
-                    text: entity.centro.nombreCentro,
+                    text: entity.medico.nombreCompleto,
                     alignment: 'center',
                     bold: true,
                     fontSize: 20,
                 },
                 {
-                    text: entity.centro.nitCentro,
+                    text: entity.medico.numIden,
                     alignment: 'center',
                     bold: true,
                     style: 'estilo',
                 },
                 {
-                    text: entity.centro.direccion,
+                    text: entity.medico.direccion,
                     alignment: 'center',
                     bold: true,
                     style: 'estilo',
                 },
                 {
-                    text: entity.centro.telefono,
+                    text: entity.medico.telefono,
                     alignment: 'center',
                     bold: true,
                     style: 'estilo',
@@ -1949,8 +1961,16 @@
                                         { text: entity.diagnosticoPal != null ? entity.diagnosticoPal.nombreDiagnostico : '', },
                                     ],
                                     [
-                                        { text: 'Diagnostico Relacional:', bold: true, },
+                                        { text: 'Diagnostico Relacional 1:', bold: true, },
                                         { text: entity.diagnosticoRel1 != null ? entity.diagnosticoRel1.nombreDiagnostico : '', },
+                                    ],
+                                    [
+                                        { text: 'Diagnostico Relacional 2:', bold: true, },
+                                        { text: entity.diagnosticoRel2 != null ? entity.diagnosticoRel2.nombreDiagnostico : '', },
+                                    ],
+                                    [
+                                        { text: 'Diagnostico Relacional 3:', bold: true, },
+                                        { text: entity.diagnosticoRel3 != null ? entity.diagnosticoRel3.nombreDiagnostico : '', },
                                     ],
                                 ]
                             },
@@ -2354,25 +2374,25 @@
                 },
                 content: [
                     {
-                        text: entity.centro.nombreCentro,
+                        text: entity.medico.nombreCompleto,
                         alignment: 'center',
                         bold: true,
                         fontSize: 20,
                     },
                     {
-                        text: entity.centro.nitCentro,
+                        text: entity.medico.numIden,
                         alignment: 'center',
                         bold: true,
                         style: 'estilo8',
                     },
                     {
-                        text: entity.centro.direccion,
+                        text: entity.medico.direccion,
                         alignment: 'center',
                         bold: true,
                         style: 'estilo8',
                     },
                     {
-                        text: entity.centro.telefono,
+                        text: entity.medico.telefono,
                         alignment: 'center',
                         bold: true,
                         style: 'estilo8',
@@ -2872,25 +2892,25 @@
                 },
                 content: [
                     {
-                        text: entity.centro.nombreCentro,
+                        text: entity.medico.nombreCompleto,
                         alignment: 'center',
                         bold: true,
                         fontSize: 20,
                     },
                     {
-                        text: entity.centro.nitCentro,
+                        text: entity.medico.numIden,
                         alignment: 'center',
                         bold: true,
                         style: 'estilo8',
                     },
                     {
-                        text: entity.centro.direccion,
+                        text: entity.medico.direccion,
                         alignment: 'center',
                         bold: true,
                         style: 'estilo8',
                     },
                     {
-                        text: entity.centro.telefono,
+                        text: entity.medico.telefono,
                         alignment: 'center',
                         bold: true,
                         style: 'estilo8',
@@ -2999,7 +3019,7 @@
                     }
                 },
             };
-
+            
             pdfMake.createPdf(Documento).open();
         }
 

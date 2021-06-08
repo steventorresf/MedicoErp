@@ -55,21 +55,44 @@
                     </div>
                     <!-- Form Panel    -->
                     <div class="col-lg-6 bg-white">
-                        <form class="form d-flex align-items-center">
+                        <form class="form d-flex align-items-center" id="formApp" name="formApp" novalidate="novalidate">
                             <div class="content">
                                 <div class="form-validate">
                                     <div class="form-group">
-                                        <input id="login-username" ng-model="vm.entity.nomUsu" type="text" name="loginUsername" required data-msg="Please enter your username" class="input-material">
-                                        <label for="login-username" class="label-material">Nombre Usuario</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control" form="formApp" ng-model="vm.entity.nomUsu" placeholder="Nombre de Usuario" required>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <input id="login-password" ng-model="vm.entity.clave" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material">
-                                        <label for="login-password" class="label-material">Contraseña</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-lock"></i>
+                                                </div>
+                                            </div>
+                                            <input type="password" class="form-control" form="formApp" ng-model="vm.entity.clave" placeholder="Contraseña" required>
+                                        </div>
                                     </div>
-                                    <button class="btn btn-primary" ng-click="vm.loginUsu()">Entrar</button>
+                                    @*<div class="form-group">
+                                            <input id="login-username" ng-model="vm.entity.nomUsu" type="text" name="loginUsername" required data-msg="Please enter your username" class="input-material">
+                                            <label for="login-username" class="label-material">Nombre Usuario</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input id="login-password" ng-model="vm.entity.clave" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material">
+                                            <label for="login-password" class="label-material">Contraseña</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select ng-model="vm.entity.clave" name="loginCentro" required data-msg="Please enter your password" class="input-material"></select>
+                                            <label class="label-material">Contraseña</label>
+                                        </div>*@
+                                    <button class="btn btn-primary mt-3" ng-click="vm.loginUsu()" ng-disabled="formApp.$invalid || vm.entity.idCentro === '0'">Entrar</button>
                                     <!-- This should be submit button but I replaced it with <a> for demo purposes-->
                                 </div>
-                                <a href="#" class="forgot-pass">¿Olvid&oacute; su Contraseña?</a><br><small>¿A&uacute;n no tiene una cuenta? </small><a href="#" class="signup">Signup</a>
                             </div>
                         </form>
                     </div>
@@ -83,7 +106,7 @@
             </p>
         </div>
     </div>
-    
+
     <script src="~/master/services/general/usuario.service.js"></script>
     <script src="~/master/controllers/login.controller.js"></script>
 </body>

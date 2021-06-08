@@ -148,25 +148,25 @@
                 },
                 content: [
                     {
-                        text: entity.centro.nombreCentro,
+                        text: entity.medico.nombreCompleto,
                         alignment: 'center',
                         bold: true,
                         fontSize: 20,
                     },
                     {
-                        text: entity.centro.nitCentro,
+                        text: entity.medico.numIden,
                         alignment: 'center',
                         bold: true,
                         style: 'estilo8',
                     },
                     {
-                        text: entity.centro.direccion,
+                        text: entity.medico.direccion,
                         alignment: 'center',
                         bold: true,
                         style: 'estilo8',
                     },
                     {
-                        text: entity.centro.telefono,
+                        text: entity.medico.telefono,
                         alignment: 'center',
                         bold: true,
                         style: 'estilo8',

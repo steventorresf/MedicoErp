@@ -2090,3 +2090,10 @@ i.btn-link {
     border-radius: 0;
     font-size: 0.9em;
 }
+
+.login-page .input-group-text{
+    width:40px;
+}
+.login-page .ui-select-bootstrap{
+    min-width:100%;
+}

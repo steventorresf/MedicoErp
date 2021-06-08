@@ -8,12 +8,22 @@
     <div class="col-12 pl-5 pr-5">
         <div class="card">
             <div class="card-header">
-                <div class="col-12 col-md-4 no-padding">
-                    <input type="date" class="form-control" ng-model="vm.entity.fecha" ng-change="vm.getAll()" />
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <input type="date" class="form-control" ng-model="vm.entity.fecha" ng-change="vm.getAll()" />
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <button class="btn btn-primary" ng-click="vm.getAll()" ng-disabled="vm.entity.fecha === undefined">Buscar</button>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
                 <div class="row">
+                    <div class="col-12">
+                        <h4>{{vm.entity.sFecha}}</h4>
+                    </div>
+                </div>
+                <div class="row mt-3">
                     <div class="col-12">
                         <div class="fontsize-10" ui-grid="vm.gridOptions" ui-grid-selection ui-grid-edit ui-grid-resize-columns ui-grid-auto-resize></div>
                     </div>

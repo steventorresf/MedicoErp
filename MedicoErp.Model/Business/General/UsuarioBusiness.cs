@@ -39,15 +39,12 @@ namespace MedicoErp.Model.Business.General
                     {
                         if (entity.CodEstado.Equals(Constantes.EstadoActivo))
                         {
-                            CentroAtencion entityCen = context.CentroAtencion.Find(entity.IdCentro);
-
                             dataCookies.Respuesta = "TodoOkey";
                             dataCookies.IdUsuario = entity.IdUsuario;
                             dataCookies.NombreUsuario = entity.NomUsuario;
                             dataCookies.NombreCompleto = entity.NombreCompleto;
                             dataCookies.CodSexo = entity.CodSexo;
                             dataCookies.IdCentro = entity.IdCentro;
-                            dataCookies.NombreCentro = entityCen.NombreCentro;
                             dataCookies.Avatar = entity.Avatar;
                             dataCookies.Menu = menuUsuarioBusiness.GetMenuByIdUsuario(entity.IdUsuario);
                         }
@@ -70,7 +67,7 @@ namespace MedicoErp.Model.Business.General
         {
             try
             {
-                List<Usuario> Lista = (from us in context.Usuario.Where(x => x.IdCentro == IdCentro)
+                List<Usuario> Lista = (from us in context.Usuario.Where(x=>x.IdCentro == IdCentro)
                                        join es in context.TablaDetalle.Where(x => x.CodTabla.Equals(Constantes.TabEstados)) on us.CodEstado equals es.CodValor
                                        select new Usuario()
                                        {
@@ -88,7 +85,6 @@ namespace MedicoErp.Model.Business.General
                                            Especialidad = us.Especialidad,
                                            Registro = us.Registro,
                                            CodEstado = us.CodEstado,
-                                           FechaIngreso = us.FechaIngreso,
                                            IdCentro = us.IdCentro,
                                            Avatar = us.Avatar,
                                            NombreEstado = es.Descripcion,
@@ -156,12 +152,14 @@ namespace MedicoErp.Model.Business.General
         {
             try
             {
-                entity.FechaIngreso = DateTimeOffset.Now;
-                entity.Especialidad = entity.Especialidad.Equals(".") ? "" : entity.Especialidad;
-                entity.Registro = entity.Registro.Equals(".") ? "" : entity.Registro;
+                using(var tran = context.Database.BeginTransaction())
+                {
+                    entity.FechaCreado = DateTimeOffset.Now;
+                    context.Usuario.Add(entity);
+                    context.SaveChanges();
 
-                context.Usuario.Add(entity);
-                context.SaveChanges();
+                    tran.Commit();
+                }
             }
             catch (Exception ex)
             {
@@ -183,9 +181,10 @@ namespace MedicoErp.Model.Business.General
                 obUsu.Telefono = entity.Telefono;
                 obUsu.EsMedico = entity.EsMedico;
                 obUsu.FechaNacimiento = entity.FechaNacimiento;
-                obUsu.Especialidad = string.IsNullOrEmpty(entity.Especialidad) ? "" : entity.Especialidad;
-                obUsu.Registro = string.IsNullOrEmpty(entity.Registro) ? "" : entity.Registro;
+                obUsu.Especialidad = entity.Especialidad;
+                obUsu.Registro = entity.Registro;
                 obUsu.Avatar = entity.Avatar;
+                obUsu.CodEstado = entity.CodEstado;
                 context.SaveChanges();
             }
             catch (Exception ex)

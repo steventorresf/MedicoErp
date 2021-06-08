@@ -35,7 +35,6 @@ namespace MedicoErp.Areas.General.Controllers
                     HttpContext.Session.SetString("NombreUsu", entity.NombreCompleto);
                     HttpContext.Session.SetString("CodSexo", entity.CodSexo);
                     HttpContext.Session.SetString("IdCentro", entity.IdCentro.ToString());
-                    HttpContext.Session.SetString("NombreCentro", entity.NombreCentro);
                     HttpContext.Session.SetString("Avatar", entity.Avatar);
                 }
                 return Ok(entity);

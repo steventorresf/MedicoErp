@@ -178,7 +178,7 @@ namespace MedicoErp.Model.Business.Admision
                                                Convenio = co,
                                                CreadoPor = fa.CreadoPor,
                                                CodEstado = fa.CodEstado,
-                                           }).OrderBy(x => x.FechaCreado).ToList();
+                                           }).OrderBy(x => x.FechaPago).ToList();
                 return Lista;
             }
             catch (Exception ex)
@@ -196,7 +196,7 @@ namespace MedicoErp.Model.Business.Admision
                                       join pac in context.Paciente on fac.IdPaciente equals pac.IdPaciente
                                       join con in context.Convenio on fac.IdConvenio equals con.IdConvenio
                                       join tus in context.TablaDetalle.Where(x => x.CodTabla.Equals(Constantes.TabTipoUsuario)) on con.CodTipoUsuario equals tus.CodValor
-                                      join cen in context.CentroAtencion on fac.IdCentro equals cen.IdCentro
+                                      join med in context.Usuario on fac.IdMedico equals med.IdUsuario
                                       join cer in context.CentroAtencion on fac.IdCentroRemision equals cer.IdCentro
                                       select new Facturacion()
                                       {
@@ -216,8 +216,11 @@ namespace MedicoErp.Model.Business.Admision
                                           CodEstado = fac.CodEstado,
                                           IdResolucion = fac.IdResolucion,
                                           MotivoAnu = fac.MotivoAnu,
-                                          CentroAtencion = cen,
-                                          CentroRemision = cer,
+                                          Medico = med,
+                                          CentroAtencionNombre = cer.Externo ? cer.NombreCentro : med.NombreCompleto,
+                                          CentroAtencionNit = cer.Externo ? cer.NitCentro : med.NumIden,
+                                          CentroAtencionDireccion = cer.Externo ? cer.Direccion : med.Direccion,
+                                          CentroAtencionTelefono = cer.Externo ? cer.Telefono : med.Telefono,
                                           Paciente = pac,
                                           Convenio = con,
                                           sFechaPago = fac.FechaPago.ToString("dd/MM/yyyy"),

@@ -55,23 +55,19 @@ namespace MedicoErp.Model.Entities.General
         [StringLength(100)]
         public string Especialidad { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string Registro { get; set; }
 
         [Required]
-        public DateTimeOffset FechaIngreso { get; set; }
-
-        [Required]
-        [StringLength(2)]
-        public string CodEstado { get; set; }
+        [StringLength(50)]
+        public string Avatar { get; set; }
 
         [Required]
         public int IdCentro { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string Avatar { get; set; }
+        [StringLength(2)]
+        public string CodEstado { get; set; }
 
         public string FilePdf { get; set; }
 

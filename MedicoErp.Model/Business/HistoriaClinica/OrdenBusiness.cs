@@ -198,28 +198,28 @@ namespace MedicoErp.Model.Business.HistoriaClinica
             try
             {
                 Orden entity = (from or in context.Orden.Where(x => x.IdOrden == IdOrden)
-                                  join ev in context.Evento on or.IdEvento equals ev.IdEvento
-                                  join pa in context.Paciente on ev.IdPaciente equals pa.IdPaciente
-                                  join ce in context.CentroAtencion on ev.IdCentro equals ce.IdCentro
-                                  join co in context.Convenio on ev.IdConvenio equals co.IdConvenio
-                                  join me in context.Usuario on or.IdMedico equals me.IdUsuario
-                                  join tu in context.TablaDetalle.Where(x => x.CodTabla.Equals(Constantes.TabTipoUsuario)) on co.CodTipoUsuario equals tu.CodValor
-                                  select new Orden()
-                                  {
-                                      IdOrden = or.IdOrden,
-                                      NoOrden = or.NoOrden,
-                                      Centro = ce,
-                                      Paciente = pa,
-                                      Convenio = co,
-                                      TipoUsuario = tu.Descripcion,
-                                      sFechaNacimiento = pa.FechaNacimiento.ToString("dd/MM/yyyy"),
-                                      sFechaOrden = or.FechaOrden.ToString("dd/MM/yyyy"),
-                                      CreadoPor = or.CreadoPor,
-                                      IdMedico = or.IdMedico,
-                                      Medico = me,
-                                      Observaciones = or.Observaciones,
-                                      Firma = Util.GetFirmaMedico(me.NomUsuario),
-                                  }).FirstOrDefault();
+                                join ev in context.Evento on or.IdEvento equals ev.IdEvento
+                                join pa in context.Paciente on ev.IdPaciente equals pa.IdPaciente
+                                join ce in context.CentroAtencion on ev.IdCentro equals ce.IdCentro
+                                join co in context.Convenio on ev.IdConvenio equals co.IdConvenio
+                                join me in context.Usuario on or.IdMedico equals me.IdUsuario
+                                join tu in context.TablaDetalle.Where(x => x.CodTabla.Equals(Constantes.TabTipoUsuario)) on co.CodTipoUsuario equals tu.CodValor
+                                select new Orden()
+                                {
+                                    IdOrden = or.IdOrden,
+                                    NoOrden = or.NoOrden,
+                                    Centro = ce,
+                                    Paciente = pa,
+                                    Convenio = co,
+                                    TipoUsuario = tu.Descripcion,
+                                    sFechaNacimiento = pa.FechaNacimiento.ToString("dd/MM/yyyy"),
+                                    sFechaOrden = or.FechaOrden.ToString("dd/MM/yyyy"),
+                                    CreadoPor = or.CreadoPor,
+                                    IdMedico = or.IdMedico,
+                                    Medico = me,
+                                    Observaciones = or.Observaciones,
+                                    Firma = Util.GetFirmaMedico(me.NomUsuario),
+                                }).FirstOrDefault();
 
                 entity.ListOrdenDetalle = (from od in context.OrdenDetalle.Where(x => x.IdOrden == IdOrden)
                                            join se in context.Servicio on od.IdServicio equals se.IdServicio

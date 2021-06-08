@@ -5,9 +5,9 @@
         .module('app')
         .controller('AppController', AppController);
 
-    AppController.$inject = ['$location', '$cookies', 'UsuarioService'];
+    AppController.$inject = ['$location', '$scope', '$cookies', 'UsuarioService'];
 
-    function AppController($location, $cookies, usuService) {
+    function AppController($location, $scope, $cookies, usuService) {
         var vm = this;
 
         vm.title = 'Home Page';

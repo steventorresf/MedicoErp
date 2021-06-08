@@ -212,25 +212,25 @@
 
             var content = [
                 {
-                    text: entity.centro.nombreCentro,
+                    text: entity.medico.nombreCompleto,
                     alignment: 'center',
                     bold: true,
                     fontSize: 20,
                 },
                 {
-                    text: entity.centro.nitCentro,
+                    text: entity.medico.numIden,
                     alignment: 'center',
                     bold: true,
                     style: 'estilo',
                 },
                 {
-                    text: entity.centro.direccion,
+                    text: entity.medico.direccion,
                     alignment: 'center',
                     bold: true,
                     style: 'estilo',
                 },
                 {
-                    text: entity.centro.telefono,
+                    text: entity.medico.telefono,
                     alignment: 'center',
                     bold: true,
                     style: 'estilo',
@@ -340,8 +340,16 @@
                                         { text: entity.diagnosticoPal != null ? entity.diagnosticoPal.nombreDiagnostico : '', },
                                     ],
                                     [
-                                        { text: 'Diagnostico Relacional:', bold: true, },
+                                        { text: 'Diagnostico Relacional 1:', bold: true, },
                                         { text: entity.diagnosticoRel1 != null ? entity.diagnosticoRel1.nombreDiagnostico : '', },
+                                    ],
+                                    [
+                                        { text: 'Diagnostico Relacional 2:', bold: true, },
+                                        { text: entity.diagnosticoRel2 != null ? entity.diagnosticoRel2.nombreDiagnostico : '', },
+                                    ],
+                                    [
+                                        { text: 'Diagnostico Relacional 3:', bold: true, },
+                                        { text: entity.diagnosticoRel3 != null ? entity.diagnosticoRel3.nombreDiagnostico : '', },
                                     ],
                                 ]
                             },

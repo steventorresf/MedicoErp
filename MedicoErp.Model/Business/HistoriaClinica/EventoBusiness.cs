@@ -316,7 +316,7 @@ namespace MedicoErp.Model.Business.HistoriaClinica
                                      pr.NombrePregunta,
                                      OrdenPregunta = pr.Orden,
                                      fd.Respuesta,
-                                 })
+                                 }).ToList()
                                  .GroupBy(x => new { x.IdArea, x.NombreArea, x.OrdenArea, x.Visible })
                                  .Select(a => new
                                  {

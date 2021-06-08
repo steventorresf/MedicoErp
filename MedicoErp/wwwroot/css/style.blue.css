@@ -1961,7 +1961,7 @@ input.input-material.is-invalid ~ label {
 
 .login-page .form-holder .form .form-group {
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .login-page .form-holder .form .content {

@@ -92,7 +92,6 @@
                 [
                     { text: 'Cups', alignment: 'center', bold: true, },
                     { text: 'Servicio', alignment: 'center', bold: true, },
-                    { text: 'Médico', alignment: 'center', bold: true, },
                     { text: 'Fecha', alignment: 'center', bold: true, },
                     { text: 'Cant', alignment: 'center', bold: true, },
                     { text: 'Total', alignment: 'center', bold: true, },
@@ -106,7 +105,6 @@
                     [
                         { text: d.codigoRef, alignment: 'center', },
                         { text: d.nombreServicio, alignment: 'left', },
-                        { text: d.nombreMedico, alignment: 'left', },
                         { text: d.sFecha, alignment: 'center', },
                         { text: d.cantidad, alignment: 'center', },
                         { text: PonerPuntosDouble(d.vrTotal), alignment: 'right', },
@@ -134,7 +132,7 @@
                             body: [
                                 [
                                     {
-                                        text: entity.centroAtencion.nombreCentro,
+                                        text: entity.medico.nombreCompleto,
                                         alignment: 'center',
                                         bold: true,
                                         fontSize: 14,
@@ -144,7 +142,7 @@
                                 ],
                                 [
                                     {
-                                        text: entity.centroAtencion.nitCentro,
+                                        text: entity.medico.numIden,
                                         alignment: 'center',
                                         bold: true,
                                     },
@@ -161,7 +159,7 @@
                                 ],
                                 [
                                     {
-                                        text: entity.centroAtencion.direccion,
+                                        text: entity.medico.direccion,
                                         alignment: 'center',
                                         bold: true,
                                     },
@@ -178,7 +176,7 @@
                                 ],
                                 [
                                     {
-                                        text: entity.centroAtencion.telefono,
+                                        text: entity.medico.telefono,
                                         alignment: 'center',
                                         bold: true,
                                     },
@@ -238,7 +236,7 @@
                     {
                         style: 'estilo',
                         table: {
-                            widths: ['8%', '44%', '22%', '12%', '4%', '10%'],
+                            widths: ['8%', '66%', '12%', '4%', '10%'],
                             body: listaDet
                         },
                         layout: {
@@ -257,15 +255,15 @@
                                     { text: '$ ' + PonerPuntosDouble(vrTotal), alignment: 'right', bold: true, },
                                 ],
                                 [
-                                    { text: entity.centroRemision.nombreCentro, bold: true, colSpan: 2, },
+                                    { text: entity.centroAtencionNombre, bold: true, colSpan: 2, },
                                     {},
                                 ],
                                 [
-                                    { text: entity.centroRemision.direccion, colSpan: 2 },
+                                    { text: entity.centroAtencionDireccion, colSpan: 2 },
                                     {},
                                 ],
                                 [
-                                    { text: entity.centroRemision.telefono, colSpan: 2 },
+                                    { text: entity.centroAtencionTelefono, colSpan: 2 },
                                     {},
                                 ],
                             ]

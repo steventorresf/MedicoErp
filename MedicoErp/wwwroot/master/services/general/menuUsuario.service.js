@@ -14,6 +14,7 @@
             getAllByIdUsuario: getAllByIdUsuario,
             getNotAllByIdUsuario: getNotAllByIdUsuario,
             create: create,
+            creates: creates,
             remove: remove
         };
 
@@ -61,6 +62,19 @@
 
         function create(data) {
             return $http.post(nameSpace, data)
+                .then(
+                    function (response) {
+                        return response;
+                    },
+                    function (errResponse) {
+                        console.log(errResponse);
+                        return $q.reject(errResponse);
+                    }
+                );
+        }
+
+        function creates(data) {
+            return $http.post(nameSpace + 'Creates/', data)
                 .then(
                     function (response) {
                         return response;

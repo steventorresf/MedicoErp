@@ -13,6 +13,7 @@ namespace MedicoErp.Model.Abstract.General
         List<MenuUsuario> GetAllByIdUsuario(int IdUsuario);
         List<Menu> GetNotAllByIdUsuario(int IdUsuario);
         void Create(MenuUsuario entity);
+        void Creates(List<MenuUsuario> lista);
         void Delete(int IdMenuUsuario);
     }
 }

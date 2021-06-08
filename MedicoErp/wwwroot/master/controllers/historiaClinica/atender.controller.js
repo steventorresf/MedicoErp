@@ -39,20 +39,25 @@
         function getAll() {
             vm.gridOptions.data = [];
 
-            var data = {
-                Fecha: new Date(vm.entity.fecha).toDateString(),
-                IdMed: vm.userApp.idUsuario,
-            };
+            if (vm.entity.fecha != undefined) {
+                var data = {
+                    Fecha: vm.entity.fecha.SetDateErp('1'),
+                    FechaDate: new Date(vm.entity.fecha.SetDateErp('2')),
+                    IdMed: vm.userApp.idUsuario,
+                };
 
-            var response = citService.getMiAgenda(data);
-            response.then(
-                function (response) {
-                    vm.gridOptions.data = response.data;
-                },
-                function (response) {
-                    console.log(response);
+                if (data.FechaDate.getFullYear() > 1900 && data.Fecha.length === 10) {
+                    var response = citService.getMiAgenda(data);
+                    response.then(
+                        function (response) {
+                            vm.gridOptions.data = response.data;
+                        },
+                        function (response) {
+                            console.log(response);
+                        }
+                    );
                 }
-            );
+            }
         }
 
         vm.gridOptions = {

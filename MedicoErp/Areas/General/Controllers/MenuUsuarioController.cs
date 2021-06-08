@@ -78,6 +78,20 @@ namespace MedicoErp.Areas.General.Controllers
             }
         }
 
+        [HttpPost("Creates")]
+        public IActionResult Creates([FromBody] List<MenuUsuario> lista)
+        {
+            try
+            {
+                menuUsuarioBusiness.Creates(lista);
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         [HttpDelete("{IdMenuUsu}")]
         public IActionResult Delete(int IdMenuUsu)
         {

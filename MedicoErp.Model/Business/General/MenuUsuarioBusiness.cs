@@ -116,6 +116,24 @@ namespace MedicoErp.Model.Business.General
             }
         }
 
+        public void Creates(List<MenuUsuario> lista)
+        {
+            try
+            {
+                using (var tran = context.Database.BeginTransaction())
+                {
+                    context.MenuUsuario.AddRange(lista);
+                    context.SaveChanges();
+                    tran.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                errorBusiness.Create("MenuUsuarioCreate", ex, null);
+                throw;
+            }
+        }
+
         public void Delete(int IdMenuUsuario)
         {
             try

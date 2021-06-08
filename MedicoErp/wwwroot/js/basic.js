@@ -87060,6 +87060,26 @@ Date.prototype.DateErp = function (sep) {
     return dateFormatted;
 }
 
+Date.prototype.SetDateErp = function (tipo) {
+    var date = new Date(this.valueOf());
+
+    var year = date.getFullYear();
+    var month = (date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1);
+    var day = (date.getDate() >= 10 ? '' : '0') + date.getDate();
+    var dateFormatted = '';
+
+    switch (tipo) {
+        case '1':
+            dateFormatted = year + '-' + month + '-' + day;
+            break;
+        case '2':
+            dateFormatted = month + '/' + day + '/' + year;
+            break;
+    }
+    
+    return dateFormatted;
+}
+
 function fnQuitarEspaciosEnBlanco(variable) {
     cadena = variable;
     while (cadena.indexOf(' ') > 0) {

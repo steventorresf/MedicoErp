@@ -31,19 +31,19 @@ namespace MedicoErp.Model.Business.HistoriaClinica
             try
             {
                 List<Formulacion> Lista = (from fr in context.Formulacion.Where(x => x.IdEvento == IdEvento && x.CodEstado.Equals(Constantes.EstadoActivo))
-                                             select new Formulacion()
-                                             {
-                                                 IdFormulacion = fr.IdFormulacion,
-                                                 IdEvento = fr.IdEvento,
-                                                 NoFormulacion = fr.NoFormulacion,
-                                                 CodEstado = fr.CodEstado,
-                                                 FechaFormulacion = fr.FechaFormulacion,
-                                                 CreadoPor = fr.CreadoPor,
-                                                 FechaCreado = fr.FechaCreado,
-                                                 FechaModificado = fr.FechaModificado,
-                                                 ModificadoPor = fr.ModificadoPor,
-                                                 sFechaFormulacion = fr.FechaFormulacion.ToString("dd/MM/yyyy", new CultureInfo("en-US"))
-                                             }).OrderByDescending(x => x.FechaFormulacion).ToList();
+                                           select new Formulacion()
+                                           {
+                                               IdFormulacion = fr.IdFormulacion,
+                                               IdEvento = fr.IdEvento,
+                                               NoFormulacion = fr.NoFormulacion,
+                                               CodEstado = fr.CodEstado,
+                                               FechaFormulacion = fr.FechaFormulacion,
+                                               CreadoPor = fr.CreadoPor,
+                                               FechaCreado = fr.FechaCreado,
+                                               FechaModificado = fr.FechaModificado,
+                                               ModificadoPor = fr.ModificadoPor,
+                                               sFechaFormulacion = fr.FechaFormulacion.ToString("dd/MM/yyyy", new CultureInfo("en-US"))
+                                           }).OrderByDescending(x => x.FechaFormulacion).ToList();
                 return Lista;
             }
             catch (Exception ex)

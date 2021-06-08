@@ -17,7 +17,6 @@
         vm.editar = editar;
         vm.guardar = guardar;
         vm.cancelar = cancelar;
-        vm.upEstado = upEstado;
         vm.getMenuUsuario = getMenuUsuario;
         vm.agregarMenuUsuario = agregarMenuUsuario;
         vm.regresarMenuUsu = regresarMenuUsu;
@@ -33,6 +32,11 @@
         vm.listBool = [
             { codigo: 'false', descripcion: 'NO' },
             { codigo: 'true', descripcion: 'SI' }
+        ];
+
+        vm.listEstados = [
+            { codigo: 'AC', descripcion: 'ACTIVO' },
+            { codigo: 'IN', descripcion: 'INACTIVO' }
         ];
 
         vm.listAvatar = [
@@ -136,23 +140,6 @@
             vm.gridVisible = true;
         }
 
-        function upEstado(idServicio, activo) {
-            var data = {
-                IdServicio: idServicio,
-                Activo: activo,
-            }
-
-            var response = serService.upEstado(data);
-            response.then(
-                function (response) {
-                    getAll();
-                },
-                function (response) {
-                    console.log(response);
-                }
-            );
-        }
-
         vm.gridOptions = {
             data: [],
             enableSorting: true,
@@ -196,7 +183,7 @@
                 {
                     name: 'esMedicoDesc',
                     field: 'esMedicoDesc',
-                    displayName: '¿Es Medico?',
+                    displayName: '¿Médico?',
                     headerCellClass: 'bg-header',
                     cellClass: 'text-center',
                     width: 100,
@@ -221,23 +208,7 @@
                     cellTemplate:
                         "<span><a href='' ng-click='grid.appScope.vm.editar(row.entity)' tooltip='Editar' tooltip-trigger='mouseenter' tooltip-placeholder='top'>" +
                         "<i class='fa fa-edit text-success'></i></a></span>",
-                    width: 100,
-                },
-                {
-                    name: 'toolEs',
-                    field: '',
-                    displayName: '',
-                    enableColumnMenu: false,
-                    enableFiltering: false,
-                    enableSorting: false,
-                    headerCellClass: 'bg-header',
-                    cellClass: 'text-center',
-                    cellTemplate:
-                        "<span ng-if='row.entity.codEstado === \"AC\"' class='ml-1'><a href='' ng-click='grid.appScope.vm.upEstado(row.entity.idServicio, false)' tooltip='Inactivar' tooltip-trigger='mouseenter' tooltip-placeholder='top'>" +
-                        "<i class='fa fa-ban text-danger'></i></a></span>" +
-                        "<span ng-if='row.entity.codEstado === \"IN\"' class='ml-1'><a href='' ng-click='grid.appScope.vm.upEstado(row.entity.idServicio, true)' tooltip='Inactivar' tooltip-trigger='mouseenter' tooltip-placeholder='top'>" +
-                        "<i class='fa fa-ban text-info'></i></a></span>",
-                    width: 100,
+                    width: 80,
                 },
                 {
                     name: 'toolMen',
@@ -250,8 +221,8 @@
                     cellClass: 'text-center',
                     cellTemplate:
                         "<span><a href='' ng-click='grid.appScope.vm.getMenuUsuario(row.entity)' tooltip='Menú' tooltip-trigger='mouseenter' tooltip-placeholder='top'>" +
-                        "<i class='fa fa-bars text-success'></i></a></span>",
-                    width: 100,
+                        "<i class='fa fa-key text-primary'></i></a></span>",
+                    width: 80,
                 },
             ],
             onRegisterApi: function (gridApi) {
@@ -261,6 +232,7 @@
 
         function getMenuUsuario(entity) {
             vm.entityUsu = angular.copy(entity);
+            vm.idMenu = null;
 
             getAllByIdUsuario();
             getNotAllByIdUsuario();
@@ -303,12 +275,16 @@
         }
 
         function agregarMenuUsuario() {
-            var data = {
-                idMenu: vm.idMenu,
-                idUsuario: vm.entityUsu.idUsuario,
-            };
+            var data = [];
 
-            var response = menusuService.create(data);
+            for (var i = 0; i < vm.idMenu.length; i++) {
+                data.push({
+                    idMenu: vm.idMenu[i],
+                    idUsuario: vm.entityUsu.idUsuario,
+                });
+            }
+
+            var response = menusuService.creates(data);
             response.then(
                 function (response) {
                     vm.idMenu = null;
